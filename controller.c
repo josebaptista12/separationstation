@@ -63,13 +63,13 @@ void ME8();
 
 // Estado atual da máquina
 Maq_Geral currentState1 = PARADO;
-Contador_Azuis currentState1 = COUNT_AZUIS;
-Contador_Verdes currentState1 = COUNT_VERDES;
-LED_WAIT_BLINK currentState1 = LW_OFF;
-Separação_Azul_T1 currentState1 = PARADO_A1;
-Separação_Verde_T1 currentState1 = PARADO_V1;
-Separação_Azul_T4 currentState1 = PARADO_A4;
-Separação_Verde_T4 currentState1 = PARADO_V4;
+Contador_Azuis currentState2 = COUNT_AZUIS;
+Contador_Verdes currentState3 = COUNT_VERDES;
+LED_WAIT_BLINK currentState4 = LW_OFF;
+Separação_Azul_T1 currentState5 = PARADO_A1;
+Separação_Verde_T1 currentState6 = PARADO_V1;
+Separação_Azul_T4 currentState7 = PARADO_A4;
+Separação_Verde_T4 currentState8 = PARADO_V4;
 
 
 // Tempo de ciclo
@@ -79,7 +79,7 @@ uint64_t  scan_time = 1000;	// 1 segundo
 // Inicializa a ME
 void init_ME1()
 {
-	jjjjjjj
+	
 }
 void init_ME2()
 {
