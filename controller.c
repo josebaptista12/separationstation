@@ -79,7 +79,7 @@ uint64_t  scan_time = 1000;	// 1 segundo
 // Inicializa a ME
 void init_ME1()
 {
-	
+	jjjjjjj
 }
 void init_ME2()
 {
