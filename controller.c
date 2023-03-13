@@ -114,8 +114,16 @@ void init_ME8()
 int main() {
 
 	
-	// Inicialização da ME
-	init_ME();
+	// Inicialização das ME
+	init_ME1();
+	init_ME2();
+	init_ME3();
+	init_ME4();
+	init_ME5();
+	init_ME6();
+	init_ME7();
+	init_ME8();
+	
 	
 	// Ciclo de execução
 	while(1) {
