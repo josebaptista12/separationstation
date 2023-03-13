@@ -76,10 +76,52 @@ Separação_Verde_T4 currentState8 = PARADO_V4;
 uint64_t  scan_time = 1000;	// 1 segundo
 
 
-// Inicializa a ME
+// Implementar ME1
 void init_ME1()
 {
-	
+	switch (currentState1) {
+		
+			
+			case PARADO :
+					
+				// Testa transição PARADO -> OPERAR
+				if (HI == 1)
+					// Próximo estado
+					currentState1 = OPERAR;
+					E1=1;
+					E2=1;
+					T1A=1;
+
+			
+				break;
+			
+			case OPERAR :
+				
+				// Testa transição OPERAR -> A_PARAR
+				if (LOW == 0)
+					// Próximo estado
+					currentState1 = Encher;
+					
+			break;
+
+			case A_PARAR :
+				
+				// Testa transição A_PARAR -> A_PARAR2
+				if (LOW == 0)
+					// Próximo estado
+					currentState1 = Encher;
+					
+			break;
+			
+			case A_PARAR :
+				
+				// Testa transição Esvaziar -> Encher
+				if (LOW == 0)
+					// Próximo estado
+					currentState1 = Encher;
+					
+			break;
+		} //end case
 }
 void init_ME2()
 {
