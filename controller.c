@@ -80,6 +80,12 @@ uint64_t  scan_time = 1;	// 1 segundo
 void init_ME1()
 {
 	LSTOP = 1;
+	START = 0;
+	LSTART=0;
+	E1=0;
+	E2=0;
+	T1A=0;
+	T4A=0;
 }
 void init_ME2()
 {
@@ -135,8 +141,8 @@ int main() {
 			switch (currentState1) {
 					
 			case PARADO :
-				 int prevSTART = 0; // assuming START is initially low
-                 LSTOP=1;
+				 int prevSTART = 0; // assuming START is initially HIGH
+                 
 				// Testa transição PARADO -> OPERAR
 				 if (START == 1 && prevSTART == 0) {
 					// Próximo estado
@@ -153,8 +159,7 @@ int main() {
 				T4A=1;
 				int prevSTOP = 0;
 				int A_PARAR_timer = 0; 
-                int A_PARAR_flag = 0; 
-				// Testa transição OPERAR -> A_PARAR
+            	// Testa transição OPERAR -> A_PARAR
 				if (STOP == 1 && prevSTOP == 0) {
 					// Próximo estado
 					currentState1 = A_PARAR;
@@ -164,11 +169,9 @@ int main() {
 			break;
 
 			case A_PARAR :
-				A_PARAR_flag = 1;
 				A_PARAR_timer++;
 				int A_PARAR_timer2 = 0; 
-                int A_PARAR_flag2 = 0; 
-				// Testa transição A_PARAR -> A_PARAR2
+                	// Testa transição A_PARAR -> A_PARAR2
 				 if (A_PARAR_timer >= 10) { 
                  if (SV1 == 0 && SV2 == 0) { 
 					// Próximo estado
@@ -178,8 +181,7 @@ int main() {
 			break;
 			
 			case A_PARAR2 :
-			    A_PARAR_flag2 = 1;
-				A_PARAR_timer2++;
+			    A_PARAR_timer2++;
 				T2A=1;
 				T3A=1;
 				// Testa transição A_PARAR2 -> PARADO
