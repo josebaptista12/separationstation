@@ -30,7 +30,7 @@ typedef enum{
 	LIGA_T2_A,
 } Separação_Azul_T1;
 typedef enum{
-	PARADO_V1
+	PARADO_V1,
 	INICIO_V1,
 	LIGA_T2_V,
     ESTICA_1,
@@ -38,7 +38,7 @@ typedef enum{
 	ARRANCA_T3,
 } Separação_Verde_T1;
 typedef enum{
-	PARADO_A4
+	PARADO_A4,
 	INICIO_A4,
 	LIGA_T3_A,
     ESTICA_2,
@@ -91,7 +91,7 @@ void init_ME3()
 }
 void init_ME4()
 {
-	LWAIT=0
+	LWAIT=0;
 }
 void init_ME5()
 {
@@ -147,9 +147,10 @@ int main() {
 			
 			case OPERAR :
 				LSTART=1;
-				E1=1
-				E2=1
+				E1=1;
+				E2=1;
 				T1A=1;
+				T4A=1;
 				int prevSTOP = 0;
 				int A_PARAR_timer = 0; 
                 int A_PARAR_flag = 0; 
@@ -179,7 +180,7 @@ int main() {
 			case A_PARAR2 :
 			    A_PARAR_flag2 = 1;
 				A_PARAR_timer2++;
-				T2A=1
+				T2A=1;
 				T3A=1;
 				// Testa transição A_PARAR2 -> PARADO
 				 if (A_PARAR_timer2 >= 15) { 
