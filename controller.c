@@ -79,61 +79,19 @@ uint64_t  scan_time = 1000;	// 1 segundo
 // Implementar ME1
 void init_ME1()
 {
-	switch (currentState1) {
-		
-			
-			case PARADO :
-					
-				// Testa transição PARADO -> OPERAR
-				if (HI == 1)
-					// Próximo estado
-					currentState1 = OPERAR;
-					E1=1;
-					E2=1;
-					T1A=1;
-
-			
-				break;
-			
-			case OPERAR :
-				
-				// Testa transição OPERAR -> A_PARAR
-				if (LOW == 0)
-					// Próximo estado
-					currentState1 = Encher;
-					
-			break;
-
-			case A_PARAR :
-				
-				// Testa transição A_PARAR -> A_PARAR2
-				if (LOW == 0)
-					// Próximo estado
-					currentState1 = Encher;
-					
-			break;
-			
-			case A_PARAR :
-				
-				// Testa transição Esvaziar -> Encher
-				if (LOW == 0)
-					// Próximo estado
-					currentState1 = Encher;
-					
-			break;
-		} //end case
+	LSTOP = 1;
 }
 void init_ME2()
 {
-	
+	AZUIS = 0;
 }
 void init_ME3()
 {
-	
+	VERDES = 0;
 }
 void init_ME4()
 {
-	
+	LWAIT=0
 }
 void init_ME5()
 {
@@ -170,45 +128,70 @@ int main() {
 	// Ciclo de execução
 	while(1) {
 
-		#ifdef DEBUG
-		printf ("\n*** Inicio do Ciclo ***\n");
-		#endif
-
-
 		// Leitura das entradas
 		read_inputs();
 
-
 		// Transição entre estados
-		switch (currentState) {
-		
-			
-			case Encher :
+			switch (currentState1) {
 					
-				// Testa transição Encher -> Esvaziar
-				if (HI == 1)
+			case PARADO :
+				 int prevSTART = 1; // assuming START is initially high
+                 LSTOP=1;
+				// Testa transição PARADO -> OPERAR
+				 if (START == 0 && prevSTART == 1) {
 					// Próximo estado
-					currentState = Esvaziar;
+					 currentState1 = OPERAR;
+					 prevSTART = START; }
 			
 				break;
 			
-			case Esvaziar :
-				
-				// Testa transição Esvaziar -> Encher
-				if (LOW == 0)
+			case OPERAR :
+				LSTART=1;
+				E1=1
+				E2=1
+				T1A=1;
+				int prevSTOP = 0;
+				int A_PARAR_timer = 0; 
+                int A_PARAR_flag = 0; 
+				// Testa transição OPERAR -> A_PARAR
+				if (STOP == 1 && prevSTOP == 0) {
 					// Próximo estado
-					currentState = Encher;
+					currentState1 = A_PARAR;
+					prevSTOP = STOP; }
+					
+					
+			break;
+
+			case A_PARAR :
+				A_PARAR_flag = 1;
+				A_PARAR_timer++;
+				int A_PARAR_timer2 = 0; 
+                int A_PARAR_flag2 = 0; 
+				// Testa transição A_PARAR -> A_PARAR2
+				 if (A_PARAR_timer >= 10) { 
+                 if (SV1 == 0 && SV2 == 0) { 
+					// Próximo estado
+					currentState1 = A_PARAR2; }
+				 }
+					
+			break;
+			
+			case A_PARAR2 :
+			    A_PARAR_flag2 = 1;
+				A_PARAR_timer2++;
+				T2A=1
+				T3A=1;
+				// Testa transição A_PARAR2 -> PARADO
+				 if (A_PARAR_timer2 >= 15) { 
+                 if (ST2 == 0 && ST3 == 0) { 
+					// Próximo estado
+					currentState1 = PARADO; }
+				 }
 					
 			break;
 		} //end case
-		
-
+				
 		// Atualiza saídas
-
-		// Saídas booleanas
-		FILL = (currentState == Encher);
-		DRAIN = (currentState == Esvaziar);
-		
 		//Escrita nas saídas
 		write_outputs();
 
