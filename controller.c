@@ -73,7 +73,7 @@ Separação_Verde_T4 currentState8 = PARADO_V4;
 
 
 // Tempo de ciclo
-uint64_t  scan_time = 1000;	// 1 segundo
+uint64_t  scan_time = 1;	// 1 segundo
 
 
 // Implementar ME1
@@ -135,10 +135,10 @@ int main() {
 			switch (currentState1) {
 					
 			case PARADO :
-				 int prevSTART = 1; // assuming START is initially high
+				 int prevSTART = 0; // assuming START is initially high
                  LSTOP=1;
 				// Testa transição PARADO -> OPERAR
-				 if (START == 0 && prevSTART == 1) {
+				 if (START == 1 && prevSTART == 0) {
 					// Próximo estado
 					 currentState1 = OPERAR;
 					 prevSTART = START; }
