@@ -135,7 +135,7 @@ int main() {
 			switch (currentState1) {
 					
 			case PARADO :
-				 int prevSTART = 0; // assuming START is initially high
+				 int prevSTART = 0; // assuming START is initially low
                  LSTOP=1;
 				// Testa transição PARADO -> OPERAR
 				 if (START == 1 && prevSTART == 0) {
