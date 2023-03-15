@@ -85,6 +85,8 @@ void init_ME1()
 	E1=0;
 	E2=0;
 	T1A=0;
+	T2A=0;
+	T3A=0;
 	T4A=0;
 }
 void init_ME2()
@@ -142,34 +144,44 @@ int main() {
 					
 			case PARADO :
 				 int prevSTART = 0; // assuming START is initially HIGH
-                 
+				 printf ("\n*** PARADO***\n");
 				// Testa transição PARADO -> OPERAR
 				 if (START == 1 && prevSTART == 0) {
 					// Próximo estado
-					 currentState1 = OPERAR;
-					 prevSTART = START; }
-			
+					currentState1 = OPERAR;
+					prevSTART = START; }
+					init_ME1();
 				break;
 			
 			case OPERAR :
-				LSTART=1;
-				E1=1;
-				E2=1;
-				T1A=1;
-				T4A=1;
-				int prevSTOP = 0;
+			printf ("\n*** OPERAR ***\n");
+				int prevSTOP = 1;
 				int A_PARAR_timer = 0; 
             	// Testa transição OPERAR -> A_PARAR
-				if (STOP == 1 && prevSTOP == 0) {
+				if (STOP == 0 && prevSTOP == 1) {
 					// Próximo estado
 					currentState1 = A_PARAR;
 					prevSTOP = STOP; }
-					
-					
+					LSTART=1;
+				    E1=1;
+				    E2=1;
+				    T1A=1;
+					T2A=1;
+					T3A=1;
+				    T4A=1;
+										
 			break;
 
 			case A_PARAR :
-				A_PARAR_timer++;
+			printf ("\n*** A_PARAR ***\n");
+			    LWAIT=1;
+				LSTART=0;
+				LSTOP=0;
+				E1=0;
+				E2=0;
+				T1A=1;
+				T4A=1;
+			   	A_PARAR_timer++;
 				int A_PARAR_timer2 = 0; 
                 	// Testa transição A_PARAR -> A_PARAR2
 				 if (A_PARAR_timer >= 10) { 
@@ -181,6 +193,7 @@ int main() {
 			break;
 			
 			case A_PARAR2 :
+				printf ("\n*** oOLAAAAAAAAAAAAAAAAAAAA ***\n");
 			    A_PARAR_timer2++;
 				T2A=1;
 				T3A=1;
