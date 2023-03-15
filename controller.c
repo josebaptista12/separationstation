@@ -174,36 +174,34 @@ int main() {
 
 			case A_PARAR :
 			printf ("\n*** A_PARAR ***\n");
-			    LWAIT=1;
-				LSTART=0;
-				LSTOP=0;
-				E1=0;
-				E2=0;
-				T1A=1;
-				T4A=1;
-			   	A_PARAR_timer++;
+			 	A_PARAR_timer++;
 				int A_PARAR_timer2 = 0; 
                 	// Testa transição A_PARAR -> A_PARAR2
-				 if (A_PARAR_timer >= 10) { 
+				 if (A_PARAR_timer >= 1400) { 
                  if (SV1 == 0 && SV2 == 0) { 
 					// Próximo estado
 					currentState1 = A_PARAR2; }
 				 }
-					
+					LWAIT=1;
+					LSTART=0;
+					LSTOP=0;
+					E1=0;
+					E2=0;
+					T1A=1;
+					T4A=1;
 			break;
 			
 			case A_PARAR2 :
 				printf ("\n*** oOLAAAAAAAAAAAAAAAAAAAA ***\n");
 			    A_PARAR_timer2++;
-				T2A=1;
-				T3A=1;
 				// Testa transição A_PARAR2 -> PARADO
-				 if (A_PARAR_timer2 >= 15) { 
+				 if (A_PARAR_timer2 >= 2100) { 
                  if (ST2 == 0 && ST3 == 0) { 
 					// Próximo estado
 					currentState1 = PARADO; }
 				 }
-					
+				T2A=1;
+				T3A=1;
 			break;
 		} //end case
 				
