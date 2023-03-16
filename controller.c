@@ -188,6 +188,8 @@ int main() {
 					E1=0;
 					E2=0;
 					T1A=1;
+					T2A=0;
+					T3A=0;
 					T4A=1;
 			break;
 			
@@ -200,8 +202,10 @@ int main() {
 					// Próximo estado
 					currentState1 = PARADO; }
 				 }
+				T1A=0;
 				T2A=1;
 				T3A=1;
+				T4A=0;
 			break;
 		} //end case
 				
