@@ -74,10 +74,14 @@ Separação_Verde_T4 currentState8 = PARADO_V4;
 
 // Tempo de ciclo
 <<<<<<< HEAD
+<<<<<<< HEAD
 uint64_t  scan_time = 200;	// 1 segundo
 =======
 uint64_t scan_time = 200;	// 200ms
 >>>>>>> 1ad887e (timers)
+=======
+uint64_t scan_time = 200;	// 200ms
+>>>>>>> 1ad887e02bbcf29a453057bcdfb999f11618b57f
 
 //VARIAVEIS FLANCOS
 
@@ -172,6 +176,7 @@ void init_ME8()
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 void ME1() {
 	switch (currentState1) {
 					
@@ -245,6 +250,8 @@ void ME1() {
 }
 // Código principal
 =======
+=======
+>>>>>>> 1ad887e02bbcf29a453057bcdfb999f11618b57f
 	typedef struct {
 	bool on;
 	uint64_t time;
@@ -272,7 +279,10 @@ void ME1() {
 	void stop_timer(timerBlock* t) {
 		t->on = false;
 		t->time = 0; }
+<<<<<<< HEAD
 >>>>>>> 1ad887e (timers)
+=======
+>>>>>>> 1ad887e02bbcf29a453057bcdfb999f11618b57f
 int main() {
 
 	
@@ -296,9 +306,12 @@ int main() {
        
 		// Transição entre estados
 <<<<<<< HEAD
+<<<<<<< HEAD
 		ME1();
 		// Atualiza saídas
 =======
+=======
+>>>>>>> 1ad887e02bbcf29a453057bcdfb999f11618b57f
 		    void ME1() {
 			edge_detection_start();
 			edge_detection_stop();
@@ -381,7 +394,10 @@ int main() {
 		// Transição entre estados
 		ME1();
 		
+<<<<<<< HEAD
 >>>>>>> 1ad887e (timers)
+=======
+>>>>>>> 1ad887e02bbcf29a453057bcdfb999f11618b57f
 		//Escrita nas saídas
 		write_outputs();
 
