@@ -73,8 +73,60 @@ Separação_Verde_T4 currentState8 = PARADO_V4;
 
 
 // Tempo de ciclo
+<<<<<<< HEAD
 uint64_t  scan_time = 200;	// 1 segundo
+=======
+uint64_t scan_time = 200;	// 200ms
+>>>>>>> 1ad887e (timers)
 
+//VARIAVEIS FLANCOS
+
+//re ==> rising edge
+//fe ==> falling edge
+
+bool p_START = 0;
+bool p_STOP = 1;
+bool p_ST2 = 0;
+bool p_ST3 = 0;
+bool p_STR = 0;
+bool p_SPE=0;
+bool p_SPR=0;
+bool p_SV=0;
+bool re_START = 0;
+bool fe_START = 0;
+bool re_STOP = 0;
+bool fe_STOP = 0;
+bool re_STR = 0;
+bool fe_STR = 0;
+bool re_ST2 = 0;
+bool fe_ST2 = 0;
+bool re_ST3 = 0;
+bool fe_ST3 = 0;
+bool re_SV = 0;
+bool fe_SV = 0;
+
+void edge_detection_start() {
+	// Flancos ascendentes start
+	if (p_START == 0 && START == 1) {
+ 		re_START = 1;
+	}
+	else {
+ 		re_START = 0;
+	}
+	p_START=START;
+}
+
+void edge_detection_stop(){
+	
+	// Flancos descendentes stop
+	if (p_STOP == 1 && STOP == 0) {
+ 		fe_STOP = 1;
+	}
+	else {
+ 		fe_STOP = 0;
+	}
+	p_STOP=STOP;
+}
 
 // Implementar ME1
 void init_ME1()
@@ -88,6 +140,7 @@ void init_ME1()
 	T2A=0;
 	T3A=0;
 	T4A=0;
+	LWAIT=0;
 }
 void init_ME2()
 {
@@ -118,6 +171,7 @@ void init_ME8()
 	
 }
 
+<<<<<<< HEAD
 void ME1() {
 	switch (currentState1) {
 					
@@ -190,6 +244,35 @@ void ME1() {
 	} //end case
 }
 // Código principal
+=======
+	typedef struct {
+	bool on;
+	uint64_t time;
+	} timerBlock;
+
+	timerBlock timer1, timer2, timer3, timer4, timer5;
+
+	void update_timers() {
+			// Atualiza temporizadores
+			if (timer1.on)
+			timer1.time = timer1.time + scan_time;
+			if (timer2.on)
+			timer2.time = timer2.time + scan_time;
+			if (timer3.on)
+			timer2.time = timer2.time + scan_time; 
+			if (timer4.on)
+			timer2.time = timer2.time + scan_time; 
+			if (timer5.on)
+			timer2.time = timer2.time + scan_time; 
+			}
+	void start_timer(timerBlock* t) {
+		t->on = true;
+		t->time = 0;
+	}
+	void stop_timer(timerBlock* t) {
+		t->on = false;
+		t->time = 0; }
+>>>>>>> 1ad887e (timers)
 int main() {
 
 	
@@ -207,12 +290,98 @@ int main() {
 	// Ciclo de execução
 	while(1) {
 
+        update_timers();
 		// Leitura das entradas
 		read_inputs();
-
+       
 		// Transição entre estados
+<<<<<<< HEAD
 		ME1();
 		// Atualiza saídas
+=======
+		    void ME1() {
+			edge_detection_start();
+			edge_detection_stop();
+		
+			switch (currentState1) {
+			
+			case PARADO :
+			
+				  printf ("\n*** PARADO***\n");
+				// Testa transição PARADO -> OPERAR
+				 if (re_START == 1) {
+					// Próximo estado
+					printf ("\n*** KKKKKK***\n");
+					currentState1 = OPERAR;
+					}
+					init_ME1();
+				break;
+			
+			case OPERAR :
+			printf ("\n*** OPERAR ***\n");
+				 
+            	// Testa transição OPERAR -> A_PARAR
+				if (fe_STOP == 1) {
+					// Próximo estado
+					currentState1 = A_PARAR;
+					start_timer(&timer1);
+
+					 }
+					LSTART=1;
+				    E1=1;
+				    E2=1;
+				    T1A=1;
+					T2A=1;
+					T3A=1;
+				    T4A=1;
+										
+			break;
+
+			case A_PARAR :
+			printf ("\n*** A_PARAR ***\n");
+			 
+                	// Testa transição A_PARAR -> A_PARAR2
+				 if (timer1.time >= 10000) { 
+                 if (SV1 == 0 && SV2 == 0) { 
+					// Próximo estado
+					stop_timer(&timer1);
+					currentState1 = A_PARAR2;
+					start_timer(&timer2); }
+				 }
+					LWAIT=1;
+					LSTART=0;
+					LSTOP=0;
+					E1=0;
+					E2=0;
+					T1A=1;
+					T2A=0;
+					T3A=0;
+					T4A=1;
+			break;
+			
+			case A_PARAR2 :
+				printf ("\n*** oOLAAAAAAAAAAAAAAAAAAAA ***\n");
+			
+				// Testa transição A_PARAR2 -> PARADO
+				 if (timer2.time >= 15000) { 
+					printf ("\n*** KKsKKKKK ***\n");
+                 if (ST2 == 0 && ST3 == 0) { 
+					// Próximo estado
+					stop_timer(&timer2);
+					currentState1 = PARADO; }
+				 }
+				T1A=0;
+				T2A=1;
+				T3A=1;
+				T4A=0;
+			break;
+		}
+		} //end case
+		
+		// Transição entre estados
+		ME1();
+		
+>>>>>>> 1ad887e (timers)
 		//Escrita nas saídas
 		write_outputs();
 
