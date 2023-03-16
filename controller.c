@@ -73,15 +73,7 @@ Separação_Verde_T4 currentState8 = PARADO_V4;
 
 
 // Tempo de ciclo
-<<<<<<< HEAD
-<<<<<<< HEAD
-uint64_t  scan_time = 200;	// 1 segundo
-=======
 uint64_t scan_time = 200;	// 200ms
->>>>>>> 1ad887e (timers)
-=======
-uint64_t scan_time = 200;	// 200ms
->>>>>>> 1ad887e02bbcf29a453057bcdfb999f11618b57f
 
 //VARIAVEIS FLANCOS
 
@@ -175,83 +167,6 @@ void init_ME8()
 	
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-void ME1() {
-	switch (currentState1) {
-					
-		case PARADO :
-			int prevSTART = 0; // assuming START is initially HIGH
-			printf ("\n*** PARADO***\n");
-			// Testa transição PARADO -> OPERAR
-			if (START == 1 && prevSTART == 0) {
-				// Próximo estado
-				currentState1 = OPERAR;
-				prevSTART = START; 
-			}
-			init_ME1();
-			break;
-		
-		case OPERAR :
-			printf ("\n*** OPERAR ***\n");
-			int prevSTOP = 1;
-			int A_PARAR_timer = 0; 
-			// Testa transição OPERAR -> A_PARAR
-			if (STOP == 0 && prevSTOP == 1) {
-				// Próximo estado
-				currentState1 = A_PARAR;
-				prevSTOP = STOP; 
-			}
-			LSTART=1;
-			LSTOP = 0;
-			E1=1;
-			E2=1;
-			T1A=1;
-			T2A=1;
-			T3A=1;
-			T4A=1;
-									
-		break;
-
-		case A_PARAR :
-			printf ("\n*** A_PARAR ***\n");
-			A_PARAR_timer++;
-			int A_PARAR_timer2 = 0; 
-				// Testa transição A_PARAR -> A_PARAR2
-			if (A_PARAR_timer >= 1400) { 
-				if (SV1 == 0 && SV2 == 0) { 
-					// Próximo estado
-					currentState1 = A_PARAR2;
-				}
-			}
-			LWAIT=1;
-			LSTART=0;
-			LSTOP=0;
-			E1=0;
-			E2=0;
-			T1A=1;
-			T4A=1;
-		break;
-		
-		case A_PARAR2 :
-			printf ("\n*** oOLAAAAAAAAAAAAAAAAAAAA ***\n");
-			A_PARAR_timer2++;
-			// Testa transição A_PARAR2 -> PARADO
-			if (A_PARAR_timer2 >= 2100) { 
-				if (ST2 == 0 && ST3 == 0) { 
-					// Próximo estado
-					currentState1 = PARADO; 
-				}
-			}
-			T2A=1;
-			T3A=1;
-		break;
-	} //end case
-}
-// Código principal
-=======
-=======
->>>>>>> 1ad887e02bbcf29a453057bcdfb999f11618b57f
 	typedef struct {
 	bool on;
 	uint64_t time;
@@ -279,10 +194,6 @@ void ME1() {
 	void stop_timer(timerBlock* t) {
 		t->on = false;
 		t->time = 0; }
-<<<<<<< HEAD
->>>>>>> 1ad887e (timers)
-=======
->>>>>>> 1ad887e02bbcf29a453057bcdfb999f11618b57f
 int main() {
 
 	
@@ -305,13 +216,6 @@ int main() {
 		read_inputs();
        
 		// Transição entre estados
-<<<<<<< HEAD
-<<<<<<< HEAD
-		ME1();
-		// Atualiza saídas
-=======
-=======
->>>>>>> 1ad887e02bbcf29a453057bcdfb999f11618b57f
 		    void ME1() {
 			edge_detection_start();
 			edge_detection_stop();
@@ -394,10 +298,6 @@ int main() {
 		// Transição entre estados
 		ME1();
 		
-<<<<<<< HEAD
->>>>>>> 1ad887e (timers)
-=======
->>>>>>> 1ad887e02bbcf29a453057bcdfb999f11618b57f
 		//Escrita nas saídas
 		write_outputs();
 
