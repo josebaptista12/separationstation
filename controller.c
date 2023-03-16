@@ -110,6 +110,22 @@ void edge_detection_start() {
  		re_START = 0;
 	}
 	p_START=START;
+
+	if (p_ST2 == 0 && ST2 == 1) {
+ 		re_ST2 = 1;
+	}
+	else {
+ 		re_ST2 = 0;
+	}
+	p_ST2=ST2;
+
+	if (p_ST3 == 0 && ST3 == 1) {
+ 		re_ST3 = 1;
+	}
+	else {
+ 		re_ST3 = 0;
+	}
+	p_ST3=ST3;
 }
 
 void edge_detection_stop(){
@@ -256,8 +272,7 @@ int main() {
 
 			case A_PARAR :
 			printf ("\n*** A_PARAR ***\n");
-			 
-                	// Testa transição A_PARAR -> A_PARAR2
+			       	// Testa transição A_PARAR -> A_PARAR2
 				 if (timer1.time >= 10000) { 
                  if (SV1 == 0 && SV2 == 0) { 
 					// Próximo estado
@@ -278,10 +293,8 @@ int main() {
 			
 			case A_PARAR2 :
 				printf ("\n*** oOLAAAAAAAAAAAAAAAAAAAA ***\n");
-			
 				// Testa transição A_PARAR2 -> PARADO
 				 if (timer2.time >= 15000) { 
-					printf ("\n*** KKsKKKKK ***\n");
                  if (ST2 == 0 && ST3 == 0) { 
 					// Próximo estado
 					stop_timer(&timer2);
@@ -294,9 +307,27 @@ int main() {
 			break;
 		}
 		} //end case
-		
+
+		void ME2() {
+		if (re_START == 1) {
+			AZUIS = 0; 
+		}
+		if (re_ST2 == 1) {
+			AZUIS = AZUIS + 1; 
+		}
+	}
+	    void ME3() {
+		if (re_START == 1) {
+			VERDES = 0; 
+		}
+		if (re_ST3 == 1) {
+			VERDES = VERDES + 1; 
+		}
+	}
 		// Transição entre estados
 		ME1();
+		ME2();
+		ME3();
 		
 		//Escrita nas saídas
 		write_outputs();
