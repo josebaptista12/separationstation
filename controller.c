@@ -1,4 +1,11 @@
 // ---------- Máquina de estados -----------
+/*
+
+	FIZEMOS IMPLEMENTAÇÃO PERIÓDICA, 
+	ACHO QUE TEMOS DE ALTERAR PARA CICLICAS
+
+
+*/
 
 #include "IO.c"
 
