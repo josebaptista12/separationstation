@@ -80,7 +80,7 @@ Separação_Verde_T4 currentState8 = PARADO_V4;
 
 
 // Tempo de ciclo
-uint64_t scan_time = 200;	// 200ms
+uint64_t scan_time = 100;	// 100ms
 
 //VARIAVEIS FLANCOS
 
@@ -217,6 +217,99 @@ void init_ME8()
 	void stop_timer(timerBlock* t) {
 		t->on = false;
 		t->time = 0; }
+
+void ME1() {
+	edge_detection_start();
+	edge_detection_stop();
+		
+	switch (currentState1) {
+			
+		case PARADO :
+			
+			printf ("\n*** PARADO***\n");
+			// Testa transição PARADO -> OPERAR
+			if (re_START == 1) {
+				// Próximo estado
+				printf ("\n*** KKKKKK***\n");
+				currentState1 = OPERAR;
+			}
+			init_ME1();
+			break;
+			
+		case OPERAR :
+			printf ("\n*** OPERAR ***\n");
+				
+			// Testa transição OPERAR -> A_PARAR
+			if (fe_STOP == 1) {
+				// Próximo estado
+				currentState1 = A_PARAR;
+				start_timer(&timer1);
+			}
+			LSTART=1;
+			LSTOP = 0;
+			E1=1;
+			E2=1;
+			T1A=1;
+			T2A=1;
+			T3A=1;
+			T4A=1;
+			break;
+
+		case A_PARAR :
+			printf ("\n*** A_PARAR ***\n");
+			// Testa transição A_PARAR -> A_PARAR2
+			if (timer1.time >= 10000) { 
+				if (SV1 == 0 && SV2 == 0) { 
+					// Próximo estado
+					stop_timer(&timer1);
+					currentState1 = A_PARAR2;
+					start_timer(&timer2); }
+			}
+			LWAIT=1;
+			LSTART=0;
+			LSTOP=0;
+			E1=0;
+			E2=0;
+			T1A=1;
+			T2A=1;
+			T3A=1;
+			T4A=1;
+			break;
+		
+		case A_PARAR2 :
+			printf ("\n*** oOLAAAAAAAAAAAAAAAAAAAA ***\n");
+			// Testa transição A_PARAR2 -> PARADO
+			if (timer2.time >= 15000) { 
+				if (ST2 == 0 && ST3 == 0) { 
+					// Próximo estado
+					stop_timer(&timer2);
+					currentState1 = PARADO; }
+			}
+			T1A=0;
+			T2A=1;
+			T3A=1;
+			T4A=0;
+			break;
+	}	
+}
+
+void ME2() {
+	if (re_START == 1) {
+		AZUIS = 0; 
+	}
+	if (re_ST2 == 1) {
+		AZUIS = AZUIS + 1; 
+	}
+}
+void ME3() {
+	if (re_START == 1) {
+		VERDES = 0; 
+	}
+	if (re_ST3 == 1) {
+		VERDES = VERDES + 1; 
+	}
+}
+		
 int main() {
 
 	
@@ -239,98 +332,8 @@ int main() {
 		read_inputs();
        
 		// Transição entre estados
-		    void ME1() {
-			edge_detection_start();
-			edge_detection_stop();
+		    
 		
-			switch (currentState1) {
-			
-			case PARADO :
-			
-				  printf ("\n*** PARADO***\n");
-				// Testa transição PARADO -> OPERAR
-				 if (re_START == 1) {
-					// Próximo estado
-					printf ("\n*** KKKKKK***\n");
-					currentState1 = OPERAR;
-					}
-					init_ME1();
-				break;
-			
-			case OPERAR :
-			printf ("\n*** OPERAR ***\n");
-				 
-            	// Testa transição OPERAR -> A_PARAR
-				if (fe_STOP == 1) {
-					// Próximo estado
-					currentState1 = A_PARAR;
-					start_timer(&timer1);
-
-					 }
-					LSTART=1;
-				    E1=1;
-				    E2=1;
-				    T1A=1;
-					T2A=1;
-					T3A=1;
-				    T4A=1;
-										
-			break;
-
-			case A_PARAR :
-			printf ("\n*** A_PARAR ***\n");
-			       	// Testa transição A_PARAR -> A_PARAR2
-				 if (timer1.time >= 10000) { 
-                 if (SV1 == 0 && SV2 == 0) { 
-					// Próximo estado
-					stop_timer(&timer1);
-					currentState1 = A_PARAR2;
-					start_timer(&timer2); }
-				 }
-					LWAIT=1;
-					LSTART=0;
-					LSTOP=0;
-					E1=0;
-					E2=0;
-					T1A=1;
-					T2A=0;
-					T3A=0;
-					T4A=1;
-			break;
-			
-			case A_PARAR2 :
-				printf ("\n*** oOLAAAAAAAAAAAAAAAAAAAA ***\n");
-				// Testa transição A_PARAR2 -> PARADO
-				 if (timer2.time >= 15000) { 
-                 if (ST2 == 0 && ST3 == 0) { 
-					// Próximo estado
-					stop_timer(&timer2);
-					currentState1 = PARADO; }
-				 }
-				T1A=0;
-				T2A=1;
-				T3A=1;
-				T4A=0;
-			break;
-		}
-		} //end case
-
-		void ME2() {
-		if (re_START == 1) {
-			AZUIS = 0; 
-		}
-		if (re_ST2 == 1) {
-			AZUIS = AZUIS + 1; 
-		}
-	}
-	    void ME3() {
-		if (re_START == 1) {
-			VERDES = 0; 
-		}
-		if (re_ST3 == 1) {
-			VERDES = VERDES + 1; 
-		}
-	}
 		// Transição entre estados
 		ME1();
 		ME2();
