@@ -190,33 +190,34 @@ void init_ME8()
 	
 }
 
-	typedef struct {
+typedef struct {
 	bool on;
 	uint64_t time;
-	} timerBlock;
+} timerBlock;
 
-	timerBlock timer1, timer2, timer3, timer4, timer5;
+timerBlock timer1, timer2, timer3, timer4, timer5;
 
-	void update_timers() {
-			// Atualiza temporizadores
-			if (timer1.on)
-			timer1.time = timer1.time + scan_time;
-			if (timer2.on)
-			timer2.time = timer2.time + scan_time;
-			if (timer3.on)
-			timer2.time = timer2.time + scan_time; 
-			if (timer4.on)
-			timer2.time = timer2.time + scan_time; 
-			if (timer5.on)
-			timer2.time = timer2.time + scan_time; 
-			}
-	void start_timer(timerBlock* t) {
-		t->on = true;
-		t->time = 0;
-	}
-	void stop_timer(timerBlock* t) {
-		t->on = false;
-		t->time = 0; }
+void update_timers() {
+	// Atualiza temporizadores
+	if (timer1.on)
+		timer1.time = timer1.time + scan_time;
+	if (timer2.on)
+		timer2.time = timer2.time + scan_time;
+	if (timer3.on)
+		timer3.time = timer3.time + scan_time; 
+	if (timer4.on)
+		timer4.time = timer4.time + scan_time; 
+	if (timer5.on)
+		timer5.time = timer5.time + scan_time; 
+}
+void start_timer(timerBlock* t) {
+	t->on = true;
+	t->time = 0;
+}
+void stop_timer(timerBlock* t) {
+	t->on = false;
+	t->time = 0; 
+}
 
 void ME1() {
 	edge_detection_start();
@@ -256,6 +257,7 @@ void ME1() {
 			break;
 
 		case A_PARAR :
+			start_timer(&timer3);
 			printf ("\n*** A_PARAR ***\n");
 			// Testa transição A_PARAR -> A_PARAR2
 			if (timer1.time >= 10000) { 
@@ -263,9 +265,9 @@ void ME1() {
 					// Próximo estado
 					stop_timer(&timer1);
 					currentState1 = A_PARAR2;
-					start_timer(&timer2); }
+					start_timer(&timer2); 
+				}
 			}
-			LWAIT=1;
 			LSTART=0;
 			LSTOP=0;
 			E1=0;
@@ -277,13 +279,15 @@ void ME1() {
 			break;
 		
 		case A_PARAR2 :
+			start_timer(&timer3);
 			printf ("\n*** oOLAAAAAAAAAAAAAAAAAAAA ***\n");
 			// Testa transição A_PARAR2 -> PARADO
 			if (timer2.time >= 15000) { 
 				if (ST2 == 0 && ST3 == 0) { 
 					// Próximo estado
 					stop_timer(&timer2);
-					currentState1 = PARADO; }
+					currentState1 = PARADO; 
+				}
 			}
 			T1A=0;
 			T2A=1;
@@ -294,6 +298,7 @@ void ME1() {
 }
 
 void ME2() {
+	//CONTER AZUIS
 	if (re_START == 1) {
 		AZUIS = 0; 
 	}
@@ -302,11 +307,28 @@ void ME2() {
 	}
 }
 void ME3() {
+	//COUNTER VERDES
 	if (re_START == 1) {
 		VERDES = 0; 
 	}
 	if (re_ST3 == 1) {
 		VERDES = VERDES + 1; 
+	}
+}
+
+void ME4() {
+	//LWAIT BLINKING
+	if(currentState1 == A_PARAR || currentState1 == A_PARAR2) {
+		printf("ENTROU NO CARALHO DO BLINKING\n");
+		if((timer3.time >= 1000) && (LWAIT == 0)) {  //ESTE TIMER NUNCA É MAIOR DO QUE 1000MS?
+			printf("SUPOSTAMENTE DEVIA PISCAR\n");
+			LWAIT = 1;
+			stop_timer(&timer3);
+		}
+		else if((timer3.time >= 1000) && (LWAIT == 1)) {
+			LWAIT = 0;
+			stop_timer(&timer3);
+		}
 	}
 }
 		
@@ -338,6 +360,7 @@ int main() {
 		ME1();
 		ME2();
 		ME3();
+		ME4();
 		
 		//Escrita nas saídas
 		write_outputs();
