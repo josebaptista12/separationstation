@@ -245,8 +245,11 @@ void ME1() {
 				// Próximo estado
 				currentState1 = A_PARAR;
 				start_timer(&timer1);
+				start_timer(&timer3);
+				
 			}
 			LSTART=1;
+			LWAIT=0;
 			LSTOP = 0;
 			E1=1;
 			E2=1;
@@ -257,15 +260,19 @@ void ME1() {
 			break;
 
 		case A_PARAR :
-			start_timer(&timer3);
 			printf ("\n*** A_PARAR ***\n");
 			// Testa transição A_PARAR -> A_PARAR2
 			if (timer1.time >= 10000) { 
 				if (SV1 == 0 && SV2 == 0) { 
 					// Próximo estado
 					stop_timer(&timer1);
+					stop_timer(&timer3);
+
+					
 					currentState1 = A_PARAR2;
-					start_timer(&timer2); 
+					start_timer(&timer2);
+					start_timer(&timer4);
+					
 				}
 			}
 			LSTART=0;
@@ -279,13 +286,13 @@ void ME1() {
 			break;
 		
 		case A_PARAR2 :
-			start_timer(&timer3);
 			printf ("\n*** oOLAAAAAAAAAAAAAAAAAAAA ***\n");
 			// Testa transição A_PARAR2 -> PARADO
 			if (timer2.time >= 15000) { 
 				if (ST2 == 0 && ST3 == 0) { 
 					// Próximo estado
 					stop_timer(&timer2);
+					stop_timer(&timer4);
 					currentState1 = PARADO; 
 				}
 			}
@@ -317,21 +324,42 @@ void ME3() {
 }
 
 void ME4() {
-	//LWAIT BLINKING
-	if(currentState1 == A_PARAR || currentState1 == A_PARAR2) {
-		printf("ENTROU NO CARALHO DO BLINKING\n");
-		if((timer3.time >= 1000) && (LWAIT == 0)) {  //ESTE TIMER NUNCA É MAIOR DO QUE 1000MS?
-			printf("SUPOSTAMENTE DEVIA PISCAR\n");
-			LWAIT = 1;
-			stop_timer(&timer3);
-		}
-		else if((timer3.time >= 1000) && (LWAIT == 1)) {
-			LWAIT = 0;
-			stop_timer(&timer3);
-		}
-	}
+    // LWAIT BLINKING
+    if (currentState1 == A_PARAR) {
+        switch (currentState4) {
+            case LW_OFF:
+                if (timer3.time >= 1000 && LWAIT == 0) {
+                    currentState4 = LW_ON;
+                }
+                init_ME4();
+                printf("ENTROU NO CARALHO DO BLINKING\n");
+                break;
+            case LW_ON:
+                if (timer3.time >= 1000 && LWAIT == 1) {
+                    currentState4 = LW_OFF;
+                }
+                LWAIT = 1;
+                break;
+        }
+    }
+    else if (currentState1 == A_PARAR2) {
+        switch (currentState4) {
+            case LW_OFF:
+                if (timer4.time >= 1000 && LWAIT == 0) {
+                    currentState4 = LW_ON;
+                }
+                init_ME4();
+                break;
+            case LW_ON:
+                if (timer4.time >= 1000 && LWAIT == 1) {
+                    currentState4 = LW_OFF;
+                }
+                LWAIT = 1;
+                break;
+        }
+    }
 }
-		
+	
 int main() {
 
 	
