@@ -39,7 +39,7 @@ typedef enum{
 typedef enum{
 	PARADO_V1,
 	INICIO_V1,
-	LIGA_T2_V,
+	LIGA_T2_V1,
     ESTICA_1,
 	RECOLHE_1,
 	ARRANCA_T3,
@@ -91,25 +91,30 @@ bool p_START = 0;
 bool p_STOP = 1;
 bool p_ST2 = 0;
 bool p_ST3 = 0;
-bool p_STR = 0;
-bool p_SPE=0;
-bool p_SPR=0;
+bool p_STR1 = 0;
+bool p_SPE1=0;
+bool p_SPR1=0;
 bool p_SV=0;
 bool re_START = 0;
 bool fe_START = 0;
 bool re_STOP = 0;
 bool fe_STOP = 0;
-bool re_STR = 0;
-bool fe_STR = 0;
+bool re_STR1 = 0;
+bool fe_STR1 = 0;
 bool re_ST2 = 0;
 bool fe_ST2 = 0;
 bool re_ST3 = 0;
 bool fe_ST3 = 0;
 bool re_SV = 0;
 bool fe_SV = 0;
+bool re_SPE1 = 0;
+bool re_SPR1 = 0;
+bool fe_SPE1 = 0;
+bool fe_SPR1 = 0;
+
 
 void edge_detection_start() {
-	// Flancos ascendentes start
+	// Flancos ascendentes
 	if (p_START == 0 && START == 1) {
  		re_START = 1;
 	}
@@ -133,11 +138,27 @@ void edge_detection_start() {
  		re_ST3 = 0;
 	}
 	p_ST3=ST3;
+
+	if (p_SPE1 == 0 && SPE1 == 1) {
+ 		re_SPE1 = 1;
+	}
+	else {
+ 		re_SPE1 = 0;
+	}
+	p_SPE1=SPE1;
+
+	if (p_SPR1 == 0 && SPR1 == 1) {
+ 		re_SPR1 = 1;
+	}
+	else {
+ 		re_SPR1 = 0;
+	}
+	p_SPR1=SPR1;
 }
 
 void edge_detection_stop(){
 	
-	// Flancos descendentes stop
+	// Flancos descendentes
 	if (p_STOP == 1 && STOP == 0) {
  		fe_STOP = 1;
 	}
@@ -145,6 +166,30 @@ void edge_detection_stop(){
  		fe_STOP = 0;
 	}
 	p_STOP=STOP;
+
+	if (p_ST2 == 1 && ST2 == 0) {
+ 		fe_ST2 = 1;
+	}
+	else {
+ 		fe_ST2 = 0;
+	}
+	p_ST2=ST2;
+
+	if (p_STR1 == 1 && STR1 == 0) {
+ 		fe_STR1 = 1;
+	}
+	else {
+ 		fe_STR1 = 0;
+	}
+	p_STR1=STR1;
+
+	if (p_ST3 == 1 && ST3 == 0) {
+ 		fe_ST3 = 1;
+	}
+	else {
+ 		fe_ST3 = 0;
+	}
+	p_ST3=ST3;
 }
 
 // Implementar ME1
@@ -359,6 +404,104 @@ void ME4() {
         }
     }
 }
+
+void ME5() {
+	edge_detection_start();
+	edge_detection_stop();
+		
+	switch (currentState5) {
+			
+		case PARADO_A1 :
+			if(currentState1 == OPERAR || currentState1 == A_PARAR) {
+				// Próximo estado
+				 printf("ASSS\n");
+				currentState5 = INICIO_A1;
+			}
+			init_ME5();
+			break;
+			
+		case INICIO_A1 :
+			// 
+			if (SV1 == 1) {
+				// Próximo estado
+				 printf("SEI\n");
+				currentState5 = LIGA_T2_A;		
+			}
+			break;
+
+		case LIGA_T2_A :
+			//
+			if (fe_ST2 == 1) { 
+				currentState5 = PARADO_A1;
+			}
+			T2A=1;
+			break;
+	}	
+}
+
+void ME6() {
+	edge_detection_start();
+	edge_detection_stop();
+		
+	switch (currentState6) {
+			
+		case PARADO_V1 :
+			if(currentState1 == OPERAR || currentState1 == A_PARAR) {
+				// Próximo estado
+				 printf("xddddddd\n");
+				currentState6 = INICIO_V1;
+			}
+			init_ME6();
+			break;
+			
+		case INICIO_V1 :
+			// 
+			if (SV1==4) {
+				// Próximo estado
+				 printf("44444444\n");
+				currentState6 = LIGA_T2_V1;		
+			}
+			break;
+
+		case LIGA_T2_V1 :
+			//
+			if (fe_STR1 == 1) { 
+				currentState6 = ESTICA_1;
+			}
+			PE1=1;
+			T2A=1;
+			break;
+
+		case ESTICA_1 :
+			// 
+			if (re_SPE1== 1) {
+				// Próximo estado
+				currentState6 = RECOLHE_1;		
+			}
+			PE1=1;
+			break;
+
+		case RECOLHE_1 :
+			// 
+			if (re_SPR1 == 1) {
+				// Próximo estado
+				
+				currentState6 = ARRANCA_T3;		
+			}
+			PR1=1;
+			break;
+
+		case ARRANCA_T3 :
+			// 
+			if (fe_ST3 == 1) {
+				// Próximo estado
+				currentState6 = PARADO_V1;		
+			}
+			T3A=1;
+			break;
+
+	}	
+}
 	
 int main() {
 
@@ -389,7 +532,9 @@ int main() {
 		ME2();
 		ME3();
 		ME4();
-		
+		ME5();
+		ME6();
+
 		//Escrita nas saídas
 		write_outputs();
 
