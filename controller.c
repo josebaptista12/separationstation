@@ -427,7 +427,7 @@ void ME5() {
 
 		case LIGA_T2_A :
 			//
-			if (fe_ST2 == 1) { 
+			if (re_ST2 == 1) { 
 				currentState5 = PARADO_A1;
 			}
 			T2A=1;
@@ -497,11 +497,12 @@ void ME6() {
 
 		case ARRANCA_T3 :
 			// 
-			if (fe_ST3 == 1) {
+			if (re_ST3 == 1) {
 				// Próximo estado
 				printf("\n\n\n\n8888888888888\n\n\n");	
 				currentState6 = PARADO_V1;		
 			}
+			PR1=0;
 			T1A=1;
 			T2A=1;
 			T3A=1;
