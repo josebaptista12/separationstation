@@ -265,8 +265,6 @@ void stop_timer(timerBlock* t) {
 }
 
 void ME1() {
-	edge_detection_start();
-	edge_detection_stop();
 		
 	switch (currentState1) {
 			
@@ -406,8 +404,6 @@ void ME4() {
 }
 
 void ME5() {
-	edge_detection_start();
-	edge_detection_stop();
 		
 	switch (currentState5) {
 			
@@ -440,8 +436,7 @@ void ME5() {
 }
 
 void ME6() {
-	edge_detection_start();
-	edge_detection_stop();
+
 		
 	switch (currentState6) {
 			
@@ -464,30 +459,39 @@ void ME6() {
 			break;
 
 		case LIGA_T2_V1 :
-			//
+			//problema aqui
 			if (fe_STR1 == 1) { 
+				printf("\n\n\n\n55555555555\n\n\n");
 				currentState6 = ESTICA_1;
+
 			}
-			PE1=1;
+
 			T2A=1;
 			break;
 
 		case ESTICA_1 :
 			// 
-			if (re_SPE1== 1) {
+			printf("\n\n\n\n666666666\n\n\n");
+			if (SPE1== 1) {
 				// Próximo estado
-				currentState6 = RECOLHE_1;		
+				currentState6 = RECOLHE_1;	
+				printf("\n\n\n\n7777777777\n\n\n");	
 			}
+			T1A=0;
+			T2A=0;
+			T3A=0;
+			T4A=0;
 			PE1=1;
 			break;
 
 		case RECOLHE_1 :
 			// 
-			if (re_SPR1 == 1) {
+			if (SPR1 == 1) {
 				// Próximo estado
 				
 				currentState6 = ARRANCA_T3;		
 			}
+			PE1=0;
 			PR1=1;
 			break;
 
@@ -495,9 +499,13 @@ void ME6() {
 			// 
 			if (fe_ST3 == 1) {
 				// Próximo estado
+				printf("\n\n\n\n8888888888888\n\n\n");	
 				currentState6 = PARADO_V1;		
 			}
+			T1A=1;
+			T2A=1;
 			T3A=1;
+			T4A=1;
 			break;
 
 	}	
@@ -515,7 +523,7 @@ int main() {
 	init_ME6();
 	init_ME7();
 	init_ME8();
-	
+
 	
 	// Ciclo de execução
 	while(1) {
@@ -525,7 +533,8 @@ int main() {
 		read_inputs();
        
 		// Transição entre estados
-		    
+		edge_detection_start();
+		edge_detection_stop();	    
 		
 		// Transição entre estados
 		ME1();
