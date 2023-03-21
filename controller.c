@@ -57,6 +57,10 @@ typedef enum{
 	INICIO_V4,
 	LIGA_T3_V,
 } Separação_Verde_T4;
+typedef enum{
+	LIVRE,
+	OCUPADO,
+} Semaforo;
 
 // Funções
 void ME1();
@@ -67,6 +71,7 @@ void ME5();
 void ME6();
 void ME7();
 void ME8();
+void ME9();
 
 // Estado atual da máquina
 Maq_Geral currentState1 = PARADO;
@@ -77,10 +82,11 @@ Separação_Azul_T1 currentState5 = PARADO_A1;
 Separação_Verde_T1 currentState6 = PARADO_V1;
 Separação_Azul_T4 currentState8 = PARADO_A4;
 Separação_Verde_T4 currentState7 = PARADO_V4;
+Semaforo currentState9 = LIVRE;
 
 
 // Tempo de ciclo
-uint64_t scan_time = 25;	// 50ms
+uint64_t scan_time = 25;	// 100ms
 
 //VARIAVEIS FLANCOS
 
@@ -244,7 +250,10 @@ void init_ME8()
 {
 	
 }
-
+void init_ME9()
+{
+	
+}
 typedef struct {
 	bool on;
 	uint64_t time;
@@ -638,6 +647,33 @@ void ME8() {
 
 	}	
 }
+
+void ME9() {
+	switch (currentState9) {
+			
+		case LIVRE :
+			if(SV1!=0 || SV2 !=0) {
+				// Próximo estado
+				printf("\n\n\nOCUPADO\n\n\n");
+				currentState9 = OCUPADO;
+			}
+			init_ME9();
+			break;
+			
+		case OCUPADO :
+			// 
+			if (re_ST2 || re_ST3) {
+				// Próximo estado
+				 printf("\n\n\n\nLIVRE\n\n\n\n");
+				currentState9 = LIVRE;		
+			}
+			break;
+
+	}	
+}
+
+
+
 int main() {
 
 	
@@ -650,6 +686,7 @@ int main() {
 	init_ME6();
 	init_ME7();
 	init_ME8();
+	init_ME9();
 
 	
 	// Ciclo de execução
@@ -672,6 +709,7 @@ int main() {
 		ME6();
 		ME7();
 		ME8();
+		ME9();
 
 		//Escrita nas saídas
 		write_outputs();
