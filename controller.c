@@ -438,7 +438,7 @@ void ME5() {
 			
 		case INICIO_A1 :
 			// 
-			if (SV1 == 1) {
+			if (SV1 == 1 /*&& currentState9==LIVRE*/) {
 				// Próximo estado
 				 printf("SEI\n");
 				currentState5 = LIGA_T2_A;		
@@ -480,7 +480,7 @@ void ME6() {
 
 		case LIGA_T2_V1 :
 			//problema aqui
-			if (fe_STR1 == 1) { 
+			if (fe_STR1 == 1 /*&& currentState9==LIVRE*/) { 
 
 				currentState6 = ESTICA_1;
 
@@ -550,7 +550,7 @@ void ME7() {
 			
 		case INICIO_V4 :
 			// 
-			if (SV2 == 4) {
+			if (SV2 == 4 /*&& currentState9==LIVRE*/) {
 				// Próximo estado
 				
 				currentState7 = LIGA_T3_V;		
@@ -594,9 +594,13 @@ void ME8() {
 
 		case LIGA_T3_A :
 			
-			if (fe_STR2 == 1) { 
+			if (fe_STR2 == 1 && currentState9==LIVRE) { 
 				printf("\n\n\nSALTA PARA A 4a ETAPA\n\n\n");
 				currentState8 = ESTICA_2;
+				T1A=0;
+				T2A=0;
+				T3A=0;
+				T4A=0;
 
 			}
 
@@ -612,10 +616,7 @@ void ME8() {
 				currentState6 = RECOLHE_2;	
 				printf("\n\n\n\nSALTA PARA A 6a ETAPA\n\n\n");	
 			}
-			T1A=0;
-			T2A=0;
-			T3A=0;
-			T4A=0;
+
 			PE2=1;
 			break;
 
@@ -647,7 +648,7 @@ void ME8() {
 
 	}	
 }
-
+/*
 void ME9() {
 	switch (currentState9) {
 			
@@ -671,7 +672,7 @@ void ME9() {
 
 	}	
 }
-
+*/
 
 
 int main() {
@@ -709,7 +710,7 @@ int main() {
 		ME6();
 		ME7();
 		ME8();
-		ME9();
+		//ME9();
 
 		//Escrita nas saídas
 		write_outputs();
