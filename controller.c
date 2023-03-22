@@ -534,7 +534,7 @@ void ME6() {
 			
 			if (re_STR1) {
 				// Próximo estado
-				nextState6 = INICIA_TRANSF_V1	
+				nextState6 = INICIA_TRANSF_V1;
 			}
 			/*T1A=0;
 			T2A=0;
@@ -722,7 +722,7 @@ void ME8() {
 
 	}	
 }
-/*
+
 void ME9() {
 	switch (currentState9) {
 			
@@ -746,7 +746,7 @@ void ME9() {
 
 	}	
 }
-*/
+
 
 
 int main() {
@@ -801,7 +801,7 @@ int main() {
 		E1 = ( currentState1 == OPERAR);
         E2 = ( currentState1 == OPERAR);
 		LWAIT = (currentState4 == LW_ON);
-		T1A = (currentState5 == INICIO_A1) || (currentState5 == AVANÇA_T1) || (currentState5 == INICIA_TRANSF1) || (currentState6 == INICIO_V1) || (currentState6 == AVANÇA_V_T1) || (currentState5 == INICIA_TRANSF_V1);
+		T1A = (currentState5 == INICIO_A1) || (currentState5 == AVANÇA_T1) || (currentState5 == INICIA_TRANSF1) || (currentState6 == INICIO_V1) || (currentState6 == AVANÇA_V_T1) || (currentState6 == INICIA_TRANSF_V1);
 		T2A = (currentState5 == INICIA_TRANSF1) || (currentState5 == AVANÇA_T2) || (currentState6 == INICIA_TRANSF_V1) || (currentState8 == AVANÇA_A_T2);
         T3A = (currentState6 == AVANÇA_V_T3) || (currentState7 == INICIA_TRANSF2) || (currentState7 == AVANÇA_T3) || (currentState8 == INICIA_TRANSF_A4);
 		T4A = (currentState7 == INICIO_V4) || (currentState7 == AVANÇA_T4) || (currentState7 == INICIA_TRANSF2) || (currentState8 == INICIO_A4) || (currentState8 == AVANÇA_A_T4) || (currentState8 == INICIA_TRANSF_A4);
