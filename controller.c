@@ -123,6 +123,7 @@ bool re_STOP = 0;
 bool fe_STOP = 0;
 bool re_STR1 = 0;
 bool fe_STR1 = 0;
+bool re_STR2 = 0;
 bool fe_STR2 = 0;
 bool re_ST2 = 0;
 bool fe_ST2 = 0;
@@ -184,6 +185,13 @@ void edge_detection() {
 	}
 	p_STOP=STOP;
 
+	if (p_STR2 == 0 && STR2 == 1) {
+ 		re_STR2 = 1;
+	}
+	else {
+ 		re_STR2 = 0;
+	}
+	p_STR1=STR1;
 	if (p_ST2 == 1 && ST2 == 0) {
  		fe_ST2 = 1;
 	}
@@ -452,24 +460,37 @@ void ME5() {
 				printf("ASSS\n");
 				nextState5 = INICIO_A1;
 			}
-			init_ME5();
+			//init_ME5();
 			break;
 			
 		case INICIO_A1 :
 			// 
-			if (SV1 == 1 /*&& currentState9==LIVRE*/) {
+			if (SV1 == 1) {
 				// Próximo estado
 				printf("SEI\n");
-				nextState5 = LIGA_T2_A;		
+				nextState5 = DETETOU_AZUL;		
 			}
 			break;
 
-		case LIGA_T2_A :
-			//
-			if (re_ST2 == 1) { 
+		case DETETOU_AZUL :
+			if (currentState9 == LIVRE) { 
+				nextState5 = AVANÇA_T1;
+			}
+			break;
+		case AVANÇA_T1 :
+			if (re_STR1) { 
+				nextState5 = INICIA_TRANSF1;
+			}
+			break;
+		case INICIA_TRANSF1 :
+			if (fe_STR1) { 
+				nextState5 = AVANÇA_T2;
+			}
+			break;
+		case AVANÇA_T2 :
+			if (fe_ST2) { 
 				nextState5 = PARADO_A1;
 			}
-			//T2A=1;
 			break;
 	}	
 }
@@ -493,27 +514,27 @@ void ME6() {
 			if (SV1==4) {
 				// Próximo estado
 
-				nextState6 = LIGA_T2_V1;		
+				nextState6 = DETETOU_VERDE;		
 			}
 			break;
 
-		case LIGA_T2_V1 :
+		case DETETOU_VERDE :
 			//problema aqui
-			if (fe_STR1 == 1 /*&& currentState9==LIVRE*/) { 
+			if (currentState9==LIVRE) { 
 
-				nextState6 = ESTICA_1;
+				nextState6 = AVANÇA_V_T1;
 
 			}
 
 			//T2A=1;
 			break;
 
-		case ESTICA_1 :
+		case AVANÇA_V_T1 :
 			// 
 			
-			if (SPE1== 1) {
+			if (re_STR1) {
 				// Próximo estado
-				nextState6 = RECOLHE_1;	
+				nextState6 = INICIA_TRANSF_V1	
 			}
 			/*T1A=0;
 			T2A=0;
@@ -522,12 +543,12 @@ void ME6() {
 			PE1=1;*/
 			break;
 
-		case RECOLHE_1 :
+		case INICIA_TRANSF_V1 :
 			// 
-			if (SPR1 == 1) {
+			if (fe_STR1) {
 				// Próximo estado
 				
-				nextState6 = ARRANCA_T3;		
+				nextState6 = ESTICA_P1;		
 			}
 			/*PE1=0;
 			PR1=1;
@@ -537,9 +558,24 @@ void ME6() {
 			T4A=0;*/
 			break;
 
-		case ARRANCA_T3 :
+		case ESTICA_P1 :
 			// 
-			if (re_ST3 == 1) {
+			if (PE1==1) {
+				// Próximo estado
+				nextState6 = RECOLHE_P1;		
+			}
+			break;
+		case RECOLHE_P1 :
+			// 
+			if (PR1==1) {
+				// Próximo estado
+				nextState6 = AVANÇA_V_T3;		
+			}
+
+			break;
+		case AVANÇA_V_T3 :
+			// 
+			if (re_ST2==1) {
 				// Próximo estado
 				nextState6 = PARADO_V1;		
 			}
@@ -549,6 +585,7 @@ void ME6() {
 			T3A=1;
 			T4A=1;*/
 			break;
+
 
 	}	
 }
@@ -560,110 +597,128 @@ void ME7() {
 		case PARADO_V4 :
 			if(currentState1 == OPERAR || currentState1 == A_PARAR) {
 				// Próximo estado
-				
+				printf("ASSS\n");
 				nextState7 = INICIO_V4;
 			}
-			
-			//init_ME7();
 			break;
 			
 		case INICIO_V4 :
 			// 
-			if (SV2 == 4 /*&& currentState9==LIVRE*/) {
+			if (SV2 == 4) {
 				// Próximo estado
-				
-				nextState7 = LIGA_T3_V;		
+				printf("SEI\n");
+				nextState7 = Detetou_VERDE4;		
 			}
 			break;
 
-		case LIGA_T3_V :
-			//
-			if (re_ST3 == 1) { 
-				nextState7 = PARADO_V4;
-
+		case Detetou_VERDE4 :
+			if (currentState9 == LIVRE) { 
+				nextState7 = AVANÇA_T4;
 			}
-			//T3A=1;
+			break;
+		case AVANÇA_T4 :
+			if (re_STR2) { 
+				nextState7 = INICIA_TRANSF2;
+			}
+			break;
+		case INICIA_TRANSF2 :
+			if (fe_STR2) { 
+				nextState7 = AVANÇA_T3;
+			}
+			break;
+		case AVANÇA_T3 :
+			if (fe_ST3) { 
+				nextState7 = PARADO_V4;
+			}
 			break;
 	}	
 }
-
 void ME8() {
 
 		
 	switch (currentState8) {
 			
 		case PARADO_A4 :
-			printf("\n\n\nENTROU NO ME8\n\n\n");
 			if(currentState1 == OPERAR || currentState1 == A_PARAR) {
 				// Próximo estado
-				printf("\n\n\nSALTA PARA A 2a ETAPA\n\n\n");
-				nextState8 = INICIO_V4;
+
+				nextState8 = INICIO_A4;
 			}
-			//init_ME8();
+			//init_ME6();
 			break;
 			
 		case INICIO_A4 :
-			// 
+	 
 			if (SV2==1) {
 				// Próximo estado
-				printf("\n\n\nSALTA PARA A 3a ETAPA\n\n\n");
-				nextState8 = LIGA_T3_A;		
+
+				nextState8 = DETETOU_AZUL4;		
 			}
 			break;
 
-		case LIGA_T3_A :
+		case DETETOU_AZUL4 :
+			//problema aqui
+			if (currentState9==LIVRE) { 
+
+				nextState8 = AVANÇA_A_T4;
+
+			}
+
+			//T2A=1;
+			break;
+
+		case AVANÇA_A_T4 :
+			// 
 			
-			if (fe_STR2 == 1 && currentState9==LIVRE) { 
-				printf("\n\n\nSALTA PARA A 4a ETAPA\n\n\n");
-				nextState8 = ESTICA_2;
-				/*T1A=0;
-				T2A=0;
-				T3A=0;
-				T4A=0;*/
-
-			}
-
-			//T3A=1;
-			break;
-
-		case ESTICA_2 :
-			// 
-			printf("\n\n\nSALTRA PAA A 5a ETAPA\n\n\n");
-			if (SPE2== 1) {
+			if (re_STR2) {
 				// Próximo estado
-				//problema aqui!!!!!!!!!!!!!//problema aqui!!!!!!!!!!!!! NUNCA ENTRA AQUI
-				nextState6 = RECOLHE_2;	
-				printf("\n\n\n\nSALTA PARA A 6a ETAPA\n\n\n");	
+				nextState8 = INICIA_TRANSF_A4;	
 			}
-
-			//PE2=1;
 			break;
 
-		case RECOLHE_2:
+		case INICIA_TRANSF_A4 :
 			// 
-			if (SPR2 == 1) {
+			if (fe_STR2) {
 				// Próximo estado
 				
-				nextState6 = ARRANCA_T2;		
-				printf("\n\n\nSALTA PARA A 7 a ETAPA\n\n\n");
+				nextState8 = ESTICA_P2;		
 			}
-			/*PE2=0;
-			PR2=1;*/
+			/*PE1=0;
+			PR1=1;
+			T1A=0;
+			T2A=0;
+			T3A=0;
+			T4A=0;*/
 			break;
 
-		case ARRANCA_T2 :
+		case ESTICA_P2 :
 			// 
-			if (re_ST3 == 1) {
+			if (PE2==1) {
 				// Próximo estado
-				printf("\n\n\nSALTA PARA A 7a ETAPA\n\n\n");
-				nextState6 = PARADO_A4;		
+				nextState8 = RECOLHE_P2;		
 			}
-			/*PR2=0;
+			break;
+		case RECOLHE_P2 :
+			// 
+			if (PR2==1) {
+				// Próximo estado
+				nextState8 = AVANÇA_A_T2;		
+			}
+
+			break;
+		case AVANÇA_A_T2 :
+			// 
+			if (fe_ST3==1) {
+				// Próximo estado
+				nextState8 = PARADO_V1;		
+			}
+			/*PR1=0;
 			T1A=1;
 			T2A=1;
 			T3A=1;
 			T4A=1;*/
 			break;
+
 
 	}	
 }
@@ -729,7 +784,7 @@ int main() {
 		ME6();
 		ME7();
 		ME8();
-		//ME9();
+		ME9();
 
 		currentState1 = nextState1;
         currentState2 = nextState2;
