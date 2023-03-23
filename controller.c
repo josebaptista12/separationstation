@@ -41,7 +41,7 @@ typedef enum{
 typedef enum{
 	PARADO_V1,
 	INICIO_V1,
-	//DETETOU_VERDE,
+	ESPERA_V1,
 	AVANÇA_V_T1,
 	INICIA_TRANSF_V1,
 	ESTICA_P1,
