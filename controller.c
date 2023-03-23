@@ -12,7 +12,7 @@
 #undef DEBUG
 
 // Tipos de dados
-
+int aux_ocupado = 0;
 // Estados da máquina
 typedef enum{
 	PARADO,
@@ -33,7 +33,7 @@ typedef enum{
 typedef enum{
 	PARADO_A1,
 	INICIO_A1,
-	DETETOU_AZUL,
+	ESPERA_A1,
 	AVANÇA_T1,
 	INICIA_TRANSF1,
 	AVANÇA_T2
@@ -41,7 +41,7 @@ typedef enum{
 typedef enum{
 	PARADO_V1,
 	INICIO_V1,
-	DETETOU_VERDE,
+	//DETETOU_VERDE,
 	AVANÇA_V_T1,
 	INICIA_TRANSF_V1,
 	ESTICA_P1,
@@ -112,7 +112,8 @@ bool p_START = 0;
 bool p_STOP = 1;
 bool p_ST2 = 0;
 bool p_ST3 = 0;
-bool p_STR1 = 0;
+bool pr_STR1 = 0;
+bool pf_STR1 = 0;
 bool p_STR2 = 0;
 bool p_SPE1=0;
 bool p_SPR1=0;
@@ -177,6 +178,15 @@ void edge_detection() {
  		re_SPR1 = 0;
 	}
 	p_SPR1=SPR1;
+
+	if (pr_STR1 == 0 && STR1 == 1) {
+ 		re_STR1 = 1;
+	}
+	else {
+ 		re_STR1 = 0;
+	}
+	pr_STR1=STR1;
+
 	if (p_STOP == 1 && STOP == 0) {
  		fe_STOP = 1;
 	}
@@ -191,7 +201,7 @@ void edge_detection() {
 	else {
  		re_STR2 = 0;
 	}
-	p_STR1=STR1;
+	p_STR2=STR2;
 	if (p_ST2 == 1 && ST2 == 0) {
  		fe_ST2 = 1;
 	}
@@ -200,13 +210,13 @@ void edge_detection() {
 	}
 	p_ST2=ST2;
 
-	if (p_STR1 == 1 && STR1 == 0) {
+	if (pf_STR1 == 1 && STR1 == 0) {
  		fe_STR1 = 1;
 	}
 	else {
  		fe_STR1 = 0;
 	}
-	p_STR1=STR1;
+	pf_STR1=STR1;
 
 	if (p_STR2 == 1 && STR2 == 0) {
  		fe_STR2 = 1;
@@ -315,13 +325,12 @@ void ME1() {
 	switch (currentState1) {
 			
 		case PARADO :
-			/*T2A=0;
-			T3A=0;*/
+			
 			//printf ("\n*** PARADO***\n");
 			// Testa transição PARADO -> OPERAR
 			if (re_START == 1) {
 				// Próximo estado
-				printf ("\n*** KKKKKK***\n");
+				//printf ("\n*** KKKKKK***\n");
 				nextState1 = OPERAR;
 			}
 			init_ME1();
@@ -338,15 +347,7 @@ void ME1() {
 				start_timer(&timer3);
 				
 			}
-			/*LSTART=1;
-			LWAIT=0;
-			LSTOP = 0;
-			E1=1;
-			E2=1;
-			T1A=1;
-			T2A=1;
-			T3A=1;
-			T4A=1;*/
+			
 			break;
 
 		case A_PARAR :
@@ -365,14 +366,6 @@ void ME1() {
 					
 				}
 			}
-			/*LSTART=0;
-			LSTOP=0;
-			E1=0;
-			E2=0;
-			T1A=1;
-			T2A=1;
-			T3A=1;
-			T4A=1;*/
 			break;
 		
 		case A_PARAR2 :
@@ -386,10 +379,6 @@ void ME1() {
 					nextState1 = PARADO; 
 				}
 			}
-			/*T1A=0;
-			T2A=1;
-			T3A=1;
-			T4A=0;*/
 			break;
 	}	
 }
@@ -421,14 +410,12 @@ void ME4() {
                 if (timer3.time >= 1000 && LWAIT == 0) {
                     nextState4 = LW_ON;
                 }
-                init_ME4();
-                printf("ENTROU NO CARALHO DO BLINKING\n");
                 break;
             case LW_ON:
                 if (timer3.time >= 1000 && LWAIT == 1) {
                     nextState4 = LW_OFF;
                 }
-                //LWAIT = 1;
+        
                 break;
         }
     }
@@ -438,13 +425,11 @@ void ME4() {
                 if (timer4.time >= 1000 && LWAIT == 0) {
                     nextState4 = LW_ON;
                 }
-                //init_ME4();
                 break;
             case LW_ON:
                 if (timer4.time >= 1000 && LWAIT == 1) {
                     nextState4 = LW_OFF;
                 }
-                //LWAIT = 1;
                 break;
         }
     }
@@ -457,7 +442,7 @@ void ME5() {
 		case PARADO_A1 :
 			if(currentState1 == OPERAR || currentState1 == A_PARAR) {
 				// Próximo estado
-				printf("ASSS\n");
+				printf("INICIO_A1\n");
 				nextState5 = INICIO_A1;
 			}
 			//init_ME5();
@@ -465,30 +450,38 @@ void ME5() {
 			
 		case INICIO_A1 :
 			// 
-			if (SV1 == 1) {
+			if (SV1 == 1 && currentState9==LIVRE) {
 				// Próximo estado
-				printf("SEI\n");
-				nextState5 = DETETOU_AZUL;		
+				printf("AVANÇA_T1\n");
+				nextState5 = AVANÇA_T1;		
+			}
+			else if(SV1==1 && currentState9==OCUPADO) {
+				nextState5 = ESPERA_A1;
+				printf("ESPERA_A1\n");
 			}
 			break;
 
-		case DETETOU_AZUL :
-			if (currentState9 == LIVRE) { 
+		case ESPERA_A1 :
+			if (currentState9 == LIVRE) {
+				printf("AVANÇA_T1\n"); 
 				nextState5 = AVANÇA_T1;
 			}
 			break;
 		case AVANÇA_T1 :
 			if (re_STR1) { 
+				printf("INICIA_TRANSF1\n"); 
 				nextState5 = INICIA_TRANSF1;
 			}
 			break;
 		case INICIA_TRANSF1 :
 			if (fe_STR1) { 
+				printf("AVANÇA_T2\n"); 
 				nextState5 = AVANÇA_T2;
 			}
 			break;
 		case AVANÇA_T2 :
-			if (fe_ST2) { 
+			if (re_ST2) { 
+				printf("PARADO_A1\n"); 
 				nextState5 = PARADO_A1;
 			}
 			break;
@@ -506,28 +499,30 @@ void ME6() {
 
 				nextState6 = INICIO_V1;
 			}
+			//printf("\n\n\nPARADO_V1\n\n\n\n");
 			//init_ME6();
 			break;
 			
 		case INICIO_V1 :
 	 
-			if (SV1==4) {
+			if (SV1==4 && currentState9==LIVRE) {
 				// Próximo estado
-
-				nextState6 = DETETOU_VERDE;		
+				//printf("\n\n\nVerde no tapete 1\n\n\n\n");
+				nextState6 = AVANÇA_V_T1;		
 			}
+			//printf("\n\n\nINICIO_V1\n\n\n\n");
 			break;
 
-		case DETETOU_VERDE :
+		/*case DETETOU_VERDE :
 			//problema aqui
-			if (currentState9==LIVRE) { 
+			if (currentState9==LIVRE) {  //fica ocupada para ela mesma, PROBLEMA!!
 
 				nextState6 = AVANÇA_V_T1;
 
 			}
-
+			printf("\n\n\nDETETOU_VERDE\n\n\n\n");
 			//T2A=1;
-			break;
+			break;*/
 
 		case AVANÇA_V_T1 :
 			// 
@@ -536,6 +531,7 @@ void ME6() {
 				// Próximo estado
 				nextState6 = INICIA_TRANSF_V1;
 			}
+			//printf("\n\n\nAVANÇA_V_T1\n\n\n\n");
 			/*T1A=0;
 			T2A=0;
 			T3A=0;
@@ -547,9 +543,9 @@ void ME6() {
 			// 
 			if (fe_STR1) {
 				// Próximo estado
-				
 				nextState6 = ESTICA_P1;		
 			}
+			//printf("\n\n\nEstá no INICIA_TRANSF_V1\n\n\n");
 			/*PE1=0;
 			PR1=1;
 			T1A=0;
@@ -562,6 +558,7 @@ void ME6() {
 			// 
 			if (PE1==1) {
 				// Próximo estado
+				//printf("\n\n\n\nESTICA_P1\n\n\n\n");
 				nextState6 = RECOLHE_P1;		
 			}
 			break;
@@ -571,7 +568,7 @@ void ME6() {
 				// Próximo estado
 				nextState6 = AVANÇA_V_T3;		
 			}
-
+			//printf("\n\n\nRECOLHE_P1\n\n\n\n");
 			break;
 		case AVANÇA_V_T3 :
 			// 
@@ -579,6 +576,7 @@ void ME6() {
 				// Próximo estado
 				nextState6 = PARADO_V1;		
 			}
+			//printf("\n\n\nAVANÇA_V_T3\n\n\n\n");
 			/*PR1=0;
 			T1A=1;
 			T2A=1;
@@ -597,7 +595,7 @@ void ME7() {
 		case PARADO_V4 :
 			if(currentState1 == OPERAR || currentState1 == A_PARAR) {
 				// Próximo estado
-				printf("ASSS\n");
+				//printf("ASSS\n");
 				nextState7 = INICIO_V4;
 			}
 			break;
@@ -606,7 +604,7 @@ void ME7() {
 			// 
 			if (SV2 == 4) {
 				// Próximo estado
-				printf("SEI\n");
+				//printf("SEI\n");
 				nextState7 = Detetou_VERDE4;		
 			}
 			break;
@@ -729,7 +727,7 @@ void ME9() {
 		case LIVRE :
 			if(SV1>0 || SV2 >0) {
 				// Próximo estado
-				printf("\n\n\nOCUPADO\n\n\n");
+				//printf("\n\n\nOCUPADO\n\n\n");
 				nextState9 = OCUPADO;
 			}
 			//init_ME9();
@@ -739,7 +737,7 @@ void ME9() {
 			// 
 			if (re_ST2 || re_ST3) {
 				// Próximo estado
-				printf("\n\n\n\nLIVRE\n\n\n\n");
+				//printf("\n\n\n\nLIVRE\n\n\n\n");
 				nextState9 = LIVRE;		
 			}
 			break;
@@ -751,7 +749,7 @@ void ME9() {
 
 int main() {
 
-	
+
 	// Inicialização das ME
 	init_ME1();
 	init_ME2();
