@@ -13,7 +13,6 @@
 
 // Tipos de dados
 int aux_ocupado = 0;
-int aux_ocupado = 0;
 // Estados da máquina
 typedef enum{
 	PARADO,
@@ -38,20 +37,10 @@ typedef enum{
 	AVANÇA_T1,
 	INICIA_TRANSF1,
 	AVANÇA_T2
-	ESPERA_A1,
-	AVANÇA_T1,
-	INICIA_TRANSF1,
-	AVANÇA_T2
 } Separação_Azul_T1;
 typedef enum{
 	PARADO_V1,
 	INICIO_V1,
-	ESPERA_V1,
-	AVANÇA_V_T1,
-	INICIA_TRANSF_V1,
-	ESTICA_P1,
-	RECOLHE_P1,
-	AVANÇA_V_T3
 	ESPERA_V1,
 	AVANÇA_V_T1,
 	INICIA_TRANSF_V1,
@@ -94,7 +83,6 @@ void ME8();
 void ME9();
 
 
-
 Maq_Geral currentState1 = PARADO;
 Contador_Azuis currentState2 = COUNT_AZUIS;
 Contador_Verdes currentState3 = COUNT_VERDES;
@@ -117,17 +105,6 @@ Separação_Verde_T4 nextState7= PARADO_V4;
 Semaforo nextState9 = LIVRE;
 /*Tempo de ciclo
 uint64_t scan_time = 25;	*/
-Maq_Geral nextState1 = PARADO;
-Contador_Azuis nextState2= COUNT_AZUIS;
-Contador_Verdes nextState3= COUNT_VERDES;
-LED_WAIT_BLINK nextState4 = LW_OFF;
-Separação_Azul_T1 nextState5= PARADO_A1;
-Separação_Verde_T1 nextState6 = PARADO_V1;
-Separação_Azul_T4 nextState8= PARADO_A4;
-Separação_Verde_T4 nextState7= PARADO_V4;
-Semaforo nextState9 = LIVRE;
-/*Tempo de ciclo
-uint64_t scan_time = 25;	*/
 
 
 
@@ -135,8 +112,6 @@ bool p_START = 0;
 bool p_STOP = 1;
 bool p_ST2 = 0;
 bool p_ST3 = 0;
-bool pr_STR1 = 0;
-bool pf_STR1 = 0;
 bool pr_STR1 = 0;
 bool pf_STR1 = 0;
 bool p_STR2 = 0;
@@ -149,7 +124,6 @@ bool re_STOP = 0;
 bool fe_STOP = 0;
 bool re_STR1 = 0;
 bool fe_STR1 = 0;
-bool re_STR2 = 0;
 bool re_STR2 = 0;
 bool fe_STR2 = 0;
 bool re_ST2 = 0;
@@ -164,7 +138,6 @@ bool fe_SPE1 = 0;
 bool fe_SPR1 = 0;
 
 
-void edge_detection() {
 void edge_detection() {
 	if (p_START == 0 && START == 1) {
  		re_START = 1;
@@ -229,13 +202,6 @@ void edge_detection() {
  		re_STR2 = 0;
 	}
 	p_STR2=STR2;
-	if (p_STR2 == 0 && STR2 == 1) {
- 		re_STR2 = 1;
-	}
-	else {
- 		re_STR2 = 0;
-	}
-	p_STR2=STR2;
 	if (p_ST2 == 1 && ST2 == 0) {
  		fe_ST2 = 1;
 	}
@@ -245,13 +211,11 @@ void edge_detection() {
 	p_ST2=ST2;
 
 	if (pf_STR1 == 1 && STR1 == 0) {
-	if (pf_STR1 == 1 && STR1 == 0) {
  		fe_STR1 = 1;
 	}
 	else {
  		fe_STR1 = 0;
 	}
-	pf_STR1=STR1;
 	pf_STR1=STR1;
 
 	if (p_STR2 == 1 && STR2 == 0) {
@@ -270,7 +234,6 @@ void edge_detection() {
 	}
 	p_ST3=ST3;
 }
-
 
 
 // Implementar ME1
@@ -339,34 +302,11 @@ void update_timers(){
     // Atualiza temporizadores
  	if (timer1.on)
  		timer1.time = timer1.time + cycle_time;
-uint64_t start_time=0, end_time=0, cycle_time=0;
-
-void update_timers(){
-
- 	end_time = get_time();
-
- 	if (start_time == 0) {
- 		cycle_time = 0;
-	}
-	else {
- 		cycle_time = end_time - start_time;
-	}
-
-	// o fim do ciclo atual é o inicio do próximo 
-	start_time = end_time;
-    // Atualiza temporizadores
- 	if (timer1.on)
- 		timer1.time = timer1.time + cycle_time;
 	if (timer2.on)
- 		timer2.time = timer2.time + cycle_time;
  		timer2.time = timer2.time + cycle_time;
 	if (timer3.on)
  		timer3.time = timer3.time + cycle_time;
- 		timer3.time = timer3.time + cycle_time;
 	if (timer4.on)
- 		timer4.time = timer4.time + cycle_time;
-    if (timer5.on)
- 		timer5.time = timer5.time + cycle_time;
  		timer4.time = timer4.time + cycle_time;
     if (timer5.on)
  		timer5.time = timer5.time + cycle_time;
@@ -381,20 +321,16 @@ void stop_timer(timerBlock* t) {
 }
 
 
-
 void ME1() {
 		
 	switch (currentState1) {
 			
 		case PARADO :
 			
-			
 			//printf ("\n*** PARADO***\n");
 			// Testa transição PARADO -> OPERAR
 			if (re_START == 1) {
 				// Próximo estado
-				//printf ("\n*** KKKKKK***\n");
-				nextState1 = OPERAR;
 				//printf ("\n*** KKKKKK***\n");
 				nextState1 = OPERAR;
 			}
@@ -408,12 +344,10 @@ void ME1() {
 			if (fe_STOP == 1) {
 				// Próximo estado
 				nextState1 = A_PARAR;
-				nextState1 = A_PARAR;
 				start_timer(&timer1);
 				start_timer(&timer3);
 				
 			}
-			
 			
 			break;
 
@@ -427,7 +361,6 @@ void ME1() {
 					stop_timer(&timer3);
 
 					
-					nextState1 = A_PARAR2;
 					nextState1 = A_PARAR2;
 					start_timer(&timer2);
 					start_timer(&timer4);
@@ -443,7 +376,6 @@ void ME1() {
 					// Próximo estado
 					stop_timer(&timer2);
 					stop_timer(&timer4);
-					nextState1 = PARADO; 
 					nextState1 = PARADO; 
 				}
 			}
@@ -477,15 +409,12 @@ void ME4() {
             case LW_OFF:
                 if (timer3.time >= 1000 && LWAIT == 0) {
                     nextState4 = LW_ON;
-                    nextState4 = LW_ON;
                 }
                 break;
             case LW_ON:
                 if (timer3.time >= 1000 && LWAIT == 1) {
                     nextState4 = LW_OFF;
-                    nextState4 = LW_OFF;
                 }
-        
         
                 break;
         }
@@ -495,12 +424,10 @@ void ME4() {
             case LW_OFF:
                 if (timer4.time >= 1000 && LWAIT == 0) {
                     nextState4 = LW_ON;
-                    nextState4 = LW_ON;
                 }
                 break;
             case LW_ON:
                 if (timer4.time >= 1000 && LWAIT == 1) {
-                    nextState4 = LW_OFF;
                     nextState4 = LW_OFF;
                 }
                 break;
@@ -517,24 +444,14 @@ void ME5() {
 				// Próximo estado
 				printf("INICIO_A1\n");
 				nextState5 = INICIO_A1;
-				printf("INICIO_A1\n");
-				nextState5 = INICIO_A1;
 			}
-			//init_ME5();
 			//init_ME5();
 			break;
 			
 		case INICIO_A1 :
 			// 
 			if (SV1 == 1 && currentState9==LIVRE) {
-			if (SV1 == 1 && currentState9==LIVRE) {
 				// Próximo estado
-				printf("AVANÇA_T1\n");
-				nextState5 = AVANÇA_T1;		
-			}
-			else if(SV1==1 && currentState9==OCUPADO) {
-				nextState5 = ESPERA_A1;
-				printf("ESPERA_A1\n");
 				printf("AVANÇA_T1\n");
 				nextState5 = AVANÇA_T1;		
 			}
@@ -594,7 +511,6 @@ void ME6() {
 				nextState6 = ESPERA_V1;
 				printf("ESPERA_V1\n");
 			}
-			//printf("\n\n\nINICIO_V1\n\n\n\n");
 			break;
         
 		case ESPERA_V1 :
@@ -659,8 +575,6 @@ void ME7() {
 				// Próximo estado
 				//printf("ASSS\n");
 				nextState7 = INICIO_V4;
-				//printf("ASSS\n");
-				nextState7 = INICIO_V4;
 			}
 			break;
 			
@@ -707,10 +621,7 @@ void ME8() {
 				// Próximo estado
 
 				nextState8 = INICIO_A4;
-
-				nextState8 = INICIO_A4;
 			}
-			//init_ME6();
 			//init_ME6();
 			break;
 			
@@ -782,28 +693,21 @@ void ME8() {
 			T2A=1;
 			T3A=1;
 			T4A=1;*/
-			T4A=1;*/
 			break;
-
 
 
 	}	
 }
-
 
 void ME9() {
 	switch (currentState9) {
 			
 		case LIVRE :
 			if(SV1>0 || SV2 >0) {
-			if(SV1>0 || SV2 >0) {
 				// Próximo estado
 				//printf("\n\n\nOCUPADO\n\n\n");
 				nextState9 = OCUPADO;
-				//printf("\n\n\nOCUPADO\n\n\n");
-				nextState9 = OCUPADO;
 			}
-			//init_ME9();
 			//init_ME9();
 			break;
 			
@@ -813,8 +717,6 @@ void ME9() {
 				// Próximo estado
 				//printf("\n\n\n\nLIVRE\n\n\n\n");
 				nextState9 = LIVRE;		
-				//printf("\n\n\n\nLIVRE\n\n\n\n");
-				nextState9 = LIVRE;		
 			}
 			break;
 
@@ -823,9 +725,7 @@ void ME9() {
 
 
 
-
 int main() {
-
 
 
 	// Inicialização das ME
@@ -844,14 +744,11 @@ int main() {
 	while(1) {
 
         
-        
 		// Leitura das entradas
 		read_inputs();
        
 		update_timers();
-		update_timers();
 		// Transição entre estados
-		edge_detection();	    
 		edge_detection();	    
 		
 		// Transição entre estados
@@ -893,7 +790,6 @@ int main() {
 		//Escrita nas saídas
 		write_outputs();
 
-			
 			
 	} // end loop
 	
