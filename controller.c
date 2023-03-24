@@ -30,14 +30,89 @@ typedef enum{
 	LW_ON,
 } LED_WAIT_BLINK;
 typedef enum{
-	PARADO_A1,
-	INICIO_A1,
-	ESPERA_A1,
-	AVANÇA_T1,
-	INICIA_TRANSF1,
-	AVANÇA_T2
-} Separação_Azul_T1;
-typedef enum{
+	PARADO_S,
+	INICIO,
+	//
+	AZUL1_ESPERA,
+	//
+	//
+	AZUL_AZUL,
+	TRANSF1,
+	LIMPA1,
+	AZUL_AZUL2,
+	TRANSF2,
+	ESTICA2_1,
+	RECOLHE2_1,
+	LIMPA2,
+	//
+	AZUL_VERDE,
+	TRANSF_CONJUNTA,
+	LIMPA_CONJUNTO,
+	//
+	//
+	VERDE1_ESPERA,
+	VERDE_AZUL,
+	TRANSF3,
+	ESTICA1_1,
+	RECOLHE1_1,
+	LIMPA3,
+	VERDE_AZUL2,
+	TRANSF4,
+	ESTICA2_2,
+	RECOLHE2_2,
+	LIMPA4,
+	//
+	VERDE_VERDE,
+	TRANSF5,
+	ESTICA1_2,
+	RECOLHE1_2,
+	LIMPA5,
+	VERDE_VERDE2,
+	TRANSF6,
+	LIMPA6,
+	//
+	//
+	AZUL1_ESPERA,
+	//
+	//
+	AZUL2_ESPERA,
+	//
+	AZUL_AZUL3,
+	TRANSF7,
+	LIMPA7,
+	AZUL_AZUL4,
+	TRANSF8,
+	ESTICA2_3,
+	RECOLHE2_3,
+	LIMPA8,
+	//
+	AZUL_VERDE3,
+	TRANSF_CONJUNTA2,
+	LIMPA_CONJUNTO2,
+	//
+	//
+	VERDE2_ESPERA,
+	VERDE_AZUL3,
+	TRANSF9,
+	ESTICA1_3,
+	RECOLHE1_3,
+	LIMPA9,
+	VERDE_AZUL4,
+	TRANSF10,
+	ESTICA2_4,
+	RECOLHE2_4,
+	LIMPA10,
+	//
+	VERDE_VERDE3,
+	TRANSF11,
+	ESTICA1_4,
+	RECOLHE1_4,
+	LIMPA11,
+	VERDE_VERDE4,
+	TRANSF12,
+	LIMPA12,
+} Separação;
+/*typedef enum{
 	PARADO_V1,
 	INICIO_V1,
 	ESPERA_V1,
@@ -69,7 +144,7 @@ typedef enum{
 	LIVRE,
 	OCUPADO,
 	//T4_CEDE
-} Semaforo;
+} Semaforo;*/
 
 // Funções
 void ME1();
@@ -77,32 +152,32 @@ void ME2();
 void ME3();
 void ME4();
 void ME5();
-void ME6();
+/*void ME6();
 void ME7();
 void ME8();
-void ME9();
+void ME9();*/
 
 
 Maq_Geral currentState1 = PARADO;
 Contador_Azuis currentState2 = COUNT_AZUIS;
 Contador_Verdes currentState3 = COUNT_VERDES;
 LED_WAIT_BLINK currentState4 = LW_OFF;
-Separação_Azul_T1 currentState5 = PARADO_A1;
-Separação_Verde_T1 currentState6 = PARADO_V1;
+Separação currentState5 = PARADO_S;
+/*Separação_Verde_T1 currentState6 = PARADO_V1;
 Separação_Verde_T4 currentState7 = PARADO_V4;
 Separação_Azul_T4 currentState8 = PARADO_A4;
-Semaforo currentState9 = LIVRE;
+Semaforo currentState9 = LIVRE;*/
 
 
 Maq_Geral nextState1 = PARADO;
 Contador_Azuis nextState2= COUNT_AZUIS;
 Contador_Verdes nextState3= COUNT_VERDES;
 LED_WAIT_BLINK nextState4 = LW_OFF;
-Separação_Azul_T1 nextState5= PARADO_A1;
-Separação_Verde_T1 nextState6 = PARADO_V1;
+Separação nextState5= PARADO_S;
+/*Separação_Verde_T1 nextState6 = PARADO_V1;
 Separação_Azul_T4 nextState8= PARADO_A4;
 Separação_Verde_T4 nextState7= PARADO_V4;
-Semaforo nextState9 = LIVRE;
+Semaforo nextState9 = LIVRE;*/
 /*Tempo de ciclo
 uint64_t scan_time = 25;	*/
 
@@ -264,7 +339,7 @@ void init_ME5()
 {
 	
 }
-void init_ME6()
+/*void init_ME6()
 {
 	
 }
@@ -279,7 +354,7 @@ void init_ME8()
 void init_ME9()
 {
 	
-}
+}*/
 typedef struct {
 	bool on;
 	uint64_t time;
@@ -761,10 +836,10 @@ int main() {
 	init_ME3();
 	init_ME4();
 	init_ME5();
-	init_ME6();
+	/*init_ME6();
 	init_ME7();
 	init_ME8();
-	init_ME9();
+	init_ME9();*/
 
 	
 	// Ciclo de execução
@@ -783,14 +858,15 @@ int main() {
 		ME2();
 		ME3();
 		ME4();
-		ME9();
+		ME5();
+		/*ME9();
 		ME5();
 		ME9();
 		ME6();
 		ME9();
 		ME7();
 		ME9();
-		ME8();
+		ME8();*/
 		
 
 		currentState1 = nextState1;
@@ -798,20 +874,20 @@ int main() {
         currentState3 = nextState3;
         currentState4 = nextState4;
         currentState5 = nextState5;
-        currentState6 = nextState6;
+        /*currentState6 = nextState6;
         currentState7 = nextState7;
         currentState8 = nextState8;
-        currentState9 = nextState9;
+        currentState9 = nextState9;*/
 
 		LSTOP = (currentState1 == PARADO);
-		LSTART = (currentState1 == OPERAR);				/*tapete3 não pára no pusher!!*/
+		LSTART = (currentState1 == OPERAR);				
 		E1 = ( currentState1 == OPERAR);
         E2 = ( currentState1 == OPERAR);
 		LWAIT = (currentState4 == LW_ON);
-		T1A = (currentState5 == INICIO_A1) || (currentState5 == AVANÇA_T1) || (currentState5 == INICIA_TRANSF1) || (currentState6 == INICIO_V1) || (currentState6 == AVANÇA_V_T1) || (currentState6 == INICIA_TRANSF_V1);
-		T2A =(currentState5 == INICIA_TRANSF1) || (currentState5 == AVANÇA_T2) || (currentState6 == INICIA_TRANSF_V1) || (currentState8 == AVANÇA_A_T2);
-        T3A = (currentState6 == AVANÇA_V_T3) || (currentState7 == INICIA_TRANSF2) || (currentState7 == AVANÇA_T3) || (currentState8 == INICIA_TRANSF_A4);
-		T4A = (currentState7 == INICIO_V4) || (currentState7 == AVANÇA_T4) || (currentState7 == INICIA_TRANSF2) || /*(currentState8 == INICIO_A4) ||*/ (currentState8 == AVANÇA_A_T4) || (currentState8 == INICIA_TRANSF_A4);
+		T1A = (currentState5 == INICIO) ||(currentState5 == AZUL_AZUL) || (currentState5 == TRANSF1) || (currentState5 == AZUL_VERDE) || (currentState5 == TRANSF_CONJUNTA) || (currentState5 == VERDE_AZUL) || (currentState5 == TRANSF3)|| (currentState5 == VERDE_AZUL)|| (currentState5 == VERDE_VERDE)|| (currentState5 == TRANSF5)|| (currentState5 == AZUL2_ESPERA)|| (currentState5 == AZUL_AZUL3)|| (currentState5 == TRANSF7)|| (currentState5 == AZUL_VERDE3)|| (currentState5 == TRANSF_CONJUNTA2)|| (currentState5 == VERDE_AZUL3)|| (currentState5 == TRANSF9)|| (currentState5 == VERDE_VERDE3)|| (currentState5 == TRANSF11);
+		T2A = (currentState5 == TRANSF1) || (currentState5 == LIMPA1) || (currentState5 == LIMPA2) || (currentState5 == AZUL_VERDE) || (currentState5 == TRANSF_CONJUNTA) || (currentState5 == LIMPA_CONJUNTO)|| (currentState5 == TRANSF3)|| (currentState5 == LIMPA4)|| (currentState5 == TRANSF5) || (currentState5 == TRANSF7) || (currentState5 == LIMPA7) || (currentState5 == LIMPA8) || (currentState5 == AZUL_VERDE3) || (currentState5 == TRANSF_CONJUNTA2) || (currentState5 == LIMPA_CONJUNTO2)|| (currentState5 == TRANSF9)|| (currentState5 == LIMPA10)|| (currentState5 == TRANSF11);
+        T3A = (currentState5 == TRANSF1) || (currentState5 == LIMPA1) || (currentState5 == LIMPA2) || (currentState5 == AZUL_VERDE) || (currentState5 == TRANSF_CONJUNTA) || (currentState5 == LIMPA_CONJUNTO)|| (currentState5 == TRANSF3)|| (currentState5 == LIMPA4)|| (currentState5 == TRANSF5) || (currentState5 == TRANSF7) || (currentState5 == LIMPA7) || (currentState5 == LIMPA8) || (currentState5 == AZUL_VERDE3) || (currentState5 == TRANSF_CONJUNTA2) || (currentState5 == LIMPA_CONJUNTO2)|| (currentState5 == TRANSF9)|| (currentState5 == LIMPA10)|| (currentState5 == TRANSF11);
+		T4A = (currentState5 == INICIO) ||(currentState5 == AZUL_AZUL) || (currentState5 == TRANSF1) || (currentState5 == AZUL_VERDE) || (currentState5 == TRANSF_CONJUNTA) || (currentState5 == VERDE_AZUL) || (currentState5 == TRANSF3)|| (currentState5 == VERDE_AZUL)|| (currentState5 == VERDE_VERDE)|| (currentState5 == TRANSF5)|| (currentState5 == AZUL2_ESPERA)|| (currentState5 == AZUL_AZUL3)|| (currentState5 == TRANSF7)|| (currentState5 == AZUL_VERDE3)|| (currentState5 == TRANSF_CONJUNTA2)|| (currentState5 == VERDE_AZUL3)|| (currentState5 == TRANSF9)|| (currentState5 == VERDE_VERDE3)|| (currentState5 == TRANSF11);
 		PE1 = (currentState6 == ESTICA_P1);																		  /*este comentário pode dar problemas mas tive de o fazer para parar o tapete*/					
 		PR1 = (currentState6 == RECOLHE_P1);
         PE2 = (currentState8 == ESTICA_P2);
