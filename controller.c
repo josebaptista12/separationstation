@@ -492,7 +492,7 @@ void ME5() {     //acho que esta está OK
 }
 
 void ME6() {
-
+                                              /*dar debug maquinas uma a uma*/
 		
 	switch (currentState6) {
 			
@@ -548,7 +548,7 @@ void ME6() {
 		case ESTICA_P1 :
 			// 
 			if (SPE1==1) {
-				//printf("RECOLHE_P1\n");
+				printf("RECOLHE_P1\n");
 				nextState6 = RECOLHE_P1;		
 			}
 			break;
@@ -581,7 +581,7 @@ void ME7() {
 		case PARADO_V4 :
 			if(currentState1 == OPERAR || currentState1 == A_PARAR) {
 				// Próximo estado
-				printf("INICIO_V4\n");
+				//printf("INICIO_V4\n");
 				nextState7 = INICIO_V4;
 			}
 			//init_ME5();
@@ -589,38 +589,38 @@ void ME7() {
 			
 		case INICIO_V4:
 			// 
-			if (SV2 == 4 && currentState9==LIVRE) {
+			if (SV2 == 4 && currentState9==LIVRE && SV1==0) {
 				// Próximo estado
-				printf("AVANÇA_T4\n");
+				//printf("AVANÇA_T4\n");
 				nextState7 = AVANÇA_T4;		
 			}
-			else if(SV1==4 && (currentState9==OCUPADO/* || currentState9==T4_CEDE*/)) {
+			else if(SV1==4 && (currentState9==OCUPADO||SV1>0)) {
 				nextState7 = ESPERA_V4;
-				printf("ESPERA_V4\n");
+				//printf("ESPERA_V4\n");
 			}
 			break;
 
 		case ESPERA_V4 :
 			if (currentState9 == LIVRE) {
-				printf("AVANÇA_T4\n"); 
+				//printf("AVANÇA_T4\n"); 
 				nextState7 = AVANÇA_T4;
 			}
 			break;
 		case AVANÇA_T4 :
 			if (re_STR2) { 
-				printf("INICIA_TRANSF2\n"); 
+				//printf("INICIA_TRANSF2\n"); 
 				nextState7 = INICIA_TRANSF2;
 			}
 			break;
 		case INICIA_TRANSF2 :
 			if (fe_STR2) { 
-				printf("AVANÇA_T3\n"); 
+				//printf("AVANÇA_T3\n"); 
 				nextState7 = AVANÇA_T3;
 			}
 			break;
 		case AVANÇA_T3 :
 			if (fe_ST3) { 
-				printf("PARADO_V4\n"); 
+				//printf("PARADO_V4\n"); 
 				nextState7 = PARADO_V4;
 			}
 			break;
@@ -633,7 +633,7 @@ void ME8() {
 		case PARADO_A4 :
 			if(currentState1 == OPERAR || currentState1 == A_PARAR || currentState1 == A_PARAR2) {
 				// Próximo estado
-
+				printf("INICIO_A4\n"); 
 				nextState8 = INICIO_A4;
 			}
 			//init_ME6();
@@ -641,19 +641,20 @@ void ME8() {
 			
 		case INICIO_A4 :
 	 
-			if (SV2==1 && currentState9==LIVRE) {
+			if (SV2==1 && (currentState9==LIVRE && SV1==0)) {
 				// Próximo estado
-
+				printf("AVANÇA_A_T4\n"); 
 				nextState8 = AVANÇA_A_T4;		
 			}
-			else if(SV2==1 && currentState9==OCUPADO) {
+			else if(SV2==1 && (currentState9==OCUPADO || SV1>0)) {
 				nextState8 = ESPERA_A4;
-				//printf("ESPERA_V1\n");
+				printf("ESPERA_A4\n");
 			}
 			break;
         case ESPERA_A4 :
 			if (currentState9 == LIVRE) { 
-				nextState8 = AVANÇA_V_T1;
+				nextState8 = AVANÇA_A_T4;
+				printf("AVANÇA_A_T4\n");
 			}
 			break;
 
@@ -663,6 +664,7 @@ void ME8() {
 			if (re_STR2) {
 				// Próximo estado
 				nextState8 = INICIA_TRANSF_A4;	
+				printf("INICIA_TRANSF_A4\n");
 			}
 			break;
 
@@ -670,7 +672,7 @@ void ME8() {
 			// 
 			if (fe_STR2) {
 				// Próximo estado
-				
+				printf("ESTICA_P2\n");
 				nextState8 = ESTICA_P2;		
 			}
 			/*PE1=0;
@@ -685,14 +687,16 @@ void ME8() {
 			// 
 			if (SPE2==1) {
 				// Próximo estado
-				nextState8 = RECOLHE_P2;		
+				nextState8 = RECOLHE_P2;	
+				printf("RECOLHE_P2\n");	
 			}
 			break;
 		case RECOLHE_P2 :
 			// 
 			if (SPR2==1) {
 				// Próximo estado
-				nextState8 = AVANÇA_A_T2;		
+				nextState8 = AVANÇA_A_T2;	
+				printf("AVANÇA_A_T2\n");	
 			}
 
 			break;
@@ -700,6 +704,7 @@ void ME8() {
 			// 
 			if (fe_ST2==1) {
 				// Próximo estado
+				printf("PARADO_A4\n");
 				nextState8 = PARADO_A4;		
 			}
 			/*PR1=0;
@@ -717,18 +722,18 @@ void ME9() {
 	switch (currentState9) {
 			
 		case LIVRE :
-			printf("LIVRE\n");
+			//printf("LIVRE\n");
 			/*if(SV1>0 && SV2>0) {
 				nextState9 = T4_CEDE;
 			}*/
 			/*else*/ if(SV1 > 0 || SV2 > 0) {
 
-				nextState9 = OCUPADO;
-			}
+				nextState9 = OCUPADO;										/*IDEIA*/
+			}										/*se sv1>0, entao as peças provenientes do tapete 4 esperam*/
 			break;
 			
 		case OCUPADO :
-			printf("OCUPADO\n");
+			//printf("OCUPADO\n");
 			
 			if (re_ST2 || re_ST3) {
 				
@@ -778,11 +783,15 @@ int main() {
 		ME2();
 		ME3();
 		ME4();
-		ME5();
-		ME6();
-		ME7();
-		ME8();
 		ME9();
+		ME5();
+		ME9();
+		ME6();
+		ME9();
+		ME7();
+		ME9();
+		ME8();
+		
 
 		currentState1 = nextState1;
         currentState2 = nextState2;
@@ -795,22 +804,21 @@ int main() {
         currentState9 = nextState9;
 
 		LSTOP = (currentState1 == PARADO);
-		LSTART = (currentState1 == OPERAR);
+		LSTART = (currentState1 == OPERAR);				/*tapete3 não pára no pusher!!*/
 		E1 = ( currentState1 == OPERAR);
         E2 = ( currentState1 == OPERAR);
 		LWAIT = (currentState4 == LW_ON);
 		T1A = (currentState5 == INICIO_A1) || (currentState5 == AVANÇA_T1) || (currentState5 == INICIA_TRANSF1) || (currentState6 == INICIO_V1) || (currentState6 == AVANÇA_V_T1) || (currentState6 == INICIA_TRANSF_V1);
 		T2A =(currentState5 == INICIA_TRANSF1) || (currentState5 == AVANÇA_T2) || (currentState6 == INICIA_TRANSF_V1) || (currentState8 == AVANÇA_A_T2);
         T3A = (currentState6 == AVANÇA_V_T3) || (currentState7 == INICIA_TRANSF2) || (currentState7 == AVANÇA_T3) || (currentState8 == INICIA_TRANSF_A4);
-		T4A = (currentState7 == INICIO_V4) || (currentState7 == AVANÇA_T4) || (currentState7 == INICIA_TRANSF2) || (currentState8 == INICIO_A4) || (currentState8 == AVANÇA_A_T4) || (currentState8 == INICIA_TRANSF_A4);
-		PE1 = (currentState6 == ESTICA_P1);
+		T4A = (currentState7 == INICIO_V4) || (currentState7 == AVANÇA_T4) || (currentState7 == INICIA_TRANSF2) || /*(currentState8 == INICIO_A4) ||*/ (currentState8 == AVANÇA_A_T4) || (currentState8 == INICIA_TRANSF_A4);
+		PE1 = (currentState6 == ESTICA_P1);																		  /*este comentário pode dar problemas mas tive de o fazer para parar o tapete*/					
 		PR1 = (currentState6 == RECOLHE_P1);
         PE2 = (currentState8 == ESTICA_P2);
 		PR2 = (currentState8 == RECOLHE_P2);
+		//printf("%d\n", currentState8);
 		
 
-
-        
 
 		//Escrita nas saídas
 		write_outputs();
