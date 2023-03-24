@@ -1,7 +1,7 @@
 // ---------- Máquina de estados -----------
 /*
 
-	FALTA ARRANJAR AS MAQUINAS DE ESTADO DA SEPARAÇÃO
+	 //VER SE O FE DO ST2 e ST3 FUNCIONA!!!!
 
 
 */
@@ -514,7 +514,82 @@ void ME4() {
 }
 
 void ME5() {
+	switch(currentState5) {
+		//verde espera
+		case VERDE2_ESPERA:
+			if(SV1 == 1) {
+				nextState5=VERDE_AZUL3;
+			}
+			else if(SV1 == 4) {
+				nextState5=VERDE_VERDE3;
+			}
+			break;
+		
+		//ramo sv1=1
+		case VERDE_AZUL3:
+			if(re_STR1) {
+			nextState5=TRANSF9;
+		}
+		break;
 
+		case TRANSF9:
+			if(fe_STR1) {
+				nextState5=ESTICA1_3;
+		}
+		break;
+
+		case ESTICA1_3:
+			if(SPE1 == 1) {
+				nextState5=RECOLHE1_3;
+		}
+
+		case RECOLHE1_3:
+			if(SPR1 == 1) {
+				nextState5=LIMPA9;
+			}
+		break;
+
+		case LIMPA9:              
+			if(fe_ST3 == 1) {
+				nextState5=VERDE_AZUL4;
+			}
+		break;
+
+		case VERDE_AZUL4:              
+			if(re_STR2) {
+				nextState5=TRANSF10;
+			}
+		break;
+
+		case TRANSF10:              
+			if(fe_STR2) {
+				nextState5=ESTICA2_4;
+			}
+		break;
+
+		case ESTICA2_4:              
+			if(SPE2 == 1) {
+				nextState5=RECOLHE2_4;
+			}
+		break;
+
+		case RECOLHE2_4:              
+			if(SPR2 == 1) {
+				nextState5=LIMPA10;
+			}
+		break;
+
+		case LIMPA10:
+			if(fe_ST2) {
+				nextState5=PARADO_S;
+			}
+		
+		//ramo sv1=4
+		case VERDE_VERDE3:
+			if(re_STR1) {
+				nextState5 = TRANSF11;
+			}
+	}
 }
 
 
