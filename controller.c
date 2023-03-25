@@ -264,14 +264,19 @@ void update_timers(){
     // Atualiza temporizadores
  	if (timer1.on)
  		timer1.time = timer1.time + cycle_time;
+
 	if (timer2.on)
  		timer2.time = timer2.time + cycle_time;
+
 	if (timer3.on)
  		timer3.time = timer3.time + cycle_time;
+
 	if (timer4.on)
  		timer4.time = timer4.time + cycle_time;
+
     if (timer5.on)
  		timer5.time = timer5.time + cycle_time;
+
 }
 void start_timer(timerBlock* t) {
 	t->on = true;
@@ -365,11 +370,13 @@ void ME4() {
             case LW_OFF:
                 if (timer3.time >= 1000 && LWAIT == 0) {
                     nextState4 = LW_ON;
+                    timer3.time=0;
                 }
                 break;
             case LW_ON:
                 if (timer3.time >= 1000 && LWAIT == 1) {
                     nextState4 = LW_OFF;
+					timer3.time=0;
                 }
         
                 break;
@@ -380,11 +387,13 @@ void ME4() {
             case LW_OFF:
                 if (timer4.time >= 1000 && LWAIT == 0) {
                     nextState4 = LW_ON;
+					timer4.time=0;
                 }
                 break;
             case LW_ON:
                 if (timer4.time >= 1000 && LWAIT == 1) {
                     nextState4 = LW_OFF;
+					timer4.time=0;
                 }
                 break;
         }
@@ -897,15 +906,14 @@ int main() {
 	// Ciclo de execução
 	while(1) {
 
-        
+        update_timers();
 		// Leitura das entradas
 		read_inputs();
-       
-		update_timers();
 		// Transição entre estados
 		edge_detection();	    
 		
-		// Transição entre estados
+
+   		// Transição entre estados
 		ME1();
 		ME2();
 		ME3();
