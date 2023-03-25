@@ -422,6 +422,71 @@ void ME5() {
 
         break;
 
+//------------RAMO  SV1=1 ----------- //
+//------------RAMO  SV1=1  E sv2=1----------- //
+		case AZUL1_ESPERA:
+			if(SV2==1) {
+				nextState5 = AZUL_AZUL;
+				printf("AZUL_AZUL\n");
+			}
+			break;
+
+		case AZUL_AZUL:
+			if(re_STR1) {
+				nextState5 = TRANSF1;
+				printf("TRANSF1\n");
+			}
+			break;
+
+		case TRANSF1:
+			if(fe_STR1) {
+				nextState5 = LIMPA1;
+				printf("LIMPA1\n");
+			}
+			break;
+
+		case LIMPA1:
+			if(fe_ST2) {
+				nextState5 = AZUL_AZUL2;
+				printf("AZUL_AZUL2\n");
+			}
+			break;
+
+		case AZUL_AZUL2:
+			if(re_STR2) {
+				nextState5 = TRANSF2;
+				printf("TRANSF2\n");
+			}
+			break;
+
+		case TRANSF2:
+			if(fe_STR2) {
+				nextState5 = ESTICA2_1;
+				printf("ESTICA2_1\n");
+			}
+			break;	
+
+		case ESTICA2_1:
+			if(SPE2==1) {
+				nextState5 = RECOLHE2_1;
+				printf("RECOLHE2_1\n");
+			}
+			break;	
+
+		case RECOLHE2_1:
+			if(SPR2==1) {
+				nextState5 = LIMPA2;
+				printf("LIMPA2\n");
+			}
+			break;
+
+		case LIMPA2:
+			if(fe_ST2) {
+				nextState5 = PARADO_S;
+				printf("PARADO_S\n");
+			}
+			break;
+
 //------------RAMO  SV2=4 ----------- // certo
 		case VERDE2_ESPERA:
 			if(SV1 == 1) {
