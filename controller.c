@@ -344,7 +344,7 @@ void ME2() {
 	if (re_START == 1) {
 		AZUIS = 0; 
 	}
-	if (re_ST2 == 1) {
+	if (fe_ST2 == 1) {
 		AZUIS = AZUIS + 1; 
 	}
 }
@@ -353,7 +353,7 @@ void ME3() {
 	if (re_START == 1) {
 		VERDES = 0; 
 	}
-	if (re_ST3 == 1) {
+	if (fe_ST3 == 1) {
 		VERDES = VERDES + 1; 
 	}
 }
@@ -443,29 +443,23 @@ void ME5() {
 
 		case TRANSF11:
 			if(fe_STR1) {
-				nextState5=ESTICA1_4;    //vai direto daqui para RECOLHE1_4
+				nextState5=ESTICA1_4;  
 				printf("ESTICA1_4\n");
-				printf("SPE1: %d\n", SPE1);
-				printf("SPR1: %d\n", SPR1);
-
 			}
 			break;
 			
-		case ESTICA1_4: //nunca entra aqui!!
-			printf("\n\n\nESTÁ NO ESTICA1_4\n");
-			printf("SPE1: %d\n", SPE1);
-			printf("SPR1: %d\n", SPR1);
-			if(SPE1 == 1 && SPR1==0) {
+		case ESTICA1_4: 
+			if(SPE1 == 1 && SPR1 == 0) {
+				printf("%d\n", nextState5);
 				printf("RECOLHE1_4\n");
 				nextState5=RECOLHE1_4;
 			}
+			break;
 
 		case RECOLHE1_4:
 			if(SPR1 == 1 && SPE1 == 0) {
 				nextState5=LIMPA11;
 				printf("LIMPA11\n");
-				printf("SPE1: %d\n", SPE1);
-				printf("SPR1: %d\n", SPR1);
 			}
 			break;
 
@@ -610,6 +604,7 @@ void ME5() {
 				nextState5=RECOLHE1_3;
 				printf("RECOLHE1_3\n");
 			}
+			break;
 
 		case RECOLHE1_3:
 			if(SPR1 == 1) {
