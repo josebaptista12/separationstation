@@ -404,8 +404,8 @@ void ME5() {
 		case INICIO:
 		
 		if(SV1==1){
-			nextState5=AZUL1_ESPERA;~
-			printf("VERDE1_ESPERA\n");
+			nextState5=AZUL1_ESPERA;
+			printf("AZUL1_ESPERA\n");
 		}
 		else if(SV1==4){
 			nextState5=VERDE1_ESPERA;
@@ -423,14 +423,30 @@ void ME5() {
         break;
 
 //------------RAMO  SV1=1 ----------- //
-//------------RAMO  SV1=1  E sv2=1----------- //
+
 		case AZUL1_ESPERA:
 			if(SV2==1) {
 				nextState5 = AZUL_AZUL;
 				printf("AZUL_AZUL\n");
 			}
+			else if(SV2==4) {
+				nextState5 = AZUL_VERDE;
+				printf("AZUL_VERDE\n");
+				aux1=0;
+			}
+			break;
+		case VERDE1_ESPERA:
+			if(SV2==1) {
+				nextState5 = VERDE_AZUL;
+				printf("VERDE_AZUL\n");
+			}
+			else if(SV2==4) {
+				nextState5 = VERDE_VERDE;
+				printf("AZUL_VERDE\n");
+			}
 			break;
 
+//------------RAMO  SV1=1  E sv2=1----------- //
 		case AZUL_AZUL:
 			if(re_STR1) {
 				nextState5 = TRANSF1;
@@ -484,6 +500,152 @@ void ME5() {
 			if(fe_ST2) {
 				nextState5 = PARADO_S;
 				printf("PARADO_S\n");
+			}
+			break;
+//------------RAMO  SV1=1  E sv2=4----------- //
+
+		case AZUL_VERDE:
+			if(aux1==2) {
+				nextState5 = TRANSF_CONJUNTA;
+				printf("TRANSF_CONJUNTA\n");
+				aux2=0;
+			}
+			break;
+
+		case TRANSF_CONJUNTA:
+			if(aux2==2) {
+				nextState5 = LIMPA_CONJUNTO;
+				printf("LIMPA_CONJUNTO\n");
+				aux3=0;
+			}
+			break;
+
+		case LIMPA_CONJUNTO:
+			if(aux3==2) {
+				nextState5 = PARADO_S;
+				printf("PARADO_S\n");
+			}
+			break;
+
+//------------RAMO  SV1=4  E sv2=1----------- //
+
+		case VERDE_AZUL:
+			if(re_STR1) {
+				nextState5 = TRANSF3;
+				printf("TRANSF3\n");
+			}
+			break;
+
+		case TRANSF3:
+			if(fe_STR1) {
+				nextState5 = ESTICA1_1;
+				printf("ESTICA1_1\n");
+			}
+			break;
+
+		case ESTICA1_1:
+			if(SPE1==1) {
+				nextState5 = RECOLHE1_1;
+				printf("RECOLHE1_1\n");
+			}
+			break;
+
+		case RECOLHE1_1:
+			if(SPR1==1) {
+				nextState5 = LIMPA3;
+				printf("LIMPA3\n");
+			}
+			break;
+
+		case LIMPA3:
+			if(fe_ST3) {
+				nextState5 = VERDE_AZUL2;
+				printf("VERDE_AZUL2\n");
+			}
+			break;	
+
+		case VERDE_AZUL2:
+			if(re_STR2) {
+				nextState5 = TRANSF4;
+				printf("TRANSF4\n");
+			}
+			break;	
+
+		case TRANSF4:
+			if(fe_STR2) {
+				nextState5 = ESTICA2_2;
+				printf("ESTICA2_2\n");
+			}
+			break;
+
+		case ESTICA2_2:
+			if(SPE2) {
+				nextState5 = RECOLHE2_2;
+				printf("RECOLHE2_2\n");
+			}
+			break;
+
+		case RECOLHE2_2:
+			if(SPR2) {
+				nextState5 = LIMPA4;
+				printf("LIMPA4\n");
+			}
+			break;
+
+		case LIMPA4:
+			if(fe_ST2) {
+				nextState5 = PARADO_S;
+				printf("PARADO_S\n");
+			}
+			break;
+
+//------------RAMO  SV1=4  E sv2=4----------- //
+
+case VERDE_VERDE:
+			if(re_STR1) {
+				nextState5 = TRANSF5;
+			}
+			break;
+
+		case TRANSF5:
+			if(fe_STR1) {
+				nextState5=ESTICA1_2;  
+			}
+			break;
+			
+		case ESTICA1_2: 
+			if(SPE1 == 1) {
+				nextState5=RECOLHE1_2;
+			}
+			break;
+
+		case RECOLHE1_2:
+			if(SPR1 == 1) {
+				nextState5=LIMPA5;
+			}
+			break;
+
+		case LIMPA5:              
+			if(fe_ST3 == 1) {
+				nextState5=VERDE_VERDE2;
+			}
+			break;
+
+		case VERDE_VERDE2:              
+			if(re_STR2) {
+				nextState5=TRANSF6;
+			}
+			break;
+
+		case TRANSF6:              
+			if(fe_STR2) {
+				nextState5=LIMPA6;
+			}
+			break;
+
+		case LIMPA6:
+			if(fe_ST3) {
+				nextState5=PARADO_S;
 			}
 			break;
 
@@ -763,8 +925,8 @@ int main() {
         E2 = ( currentState1 == OPERAR);
 		LWAIT = (currentState4 == LW_ON);
 		T1A = (currentState5 == INICIO) || (currentState5 == AZUL_AZUL) || (currentState5 == TRANSF1) || (currentState5 == AZUL_VERDE) || (currentState5 == TRANSF_CONJUNTA) || (currentState5 == VERDE_AZUL) || (currentState5 == TRANSF3) || (currentState5 == VERDE_VERDE) || (currentState5 == TRANSF5) || (currentState5 == AZUL2_ESPERA) || (currentState5 == AZUL_AZUL3) || (currentState5 == TRANSF7) || (currentState5 == AZUL_VERDE3) || (currentState5 == TRANSF_CONJUNTA2) || (currentState5 == VERDE2_ESPERA)|| (currentState5 == AZUL_VERDE3) || (currentState5 == TRANSF9) || (currentState5 == VERDE_VERDE3) || (currentState5 == TRANSF11) || (currentState5 == VERDE_AZUL3);
-		T2A = (currentState5 == TRANSF1) || (currentState5 == LIMPA1) || (currentState5 == LIMPA2) || (currentState5 == TRANSF_CONJUNTA) || (currentState5 == LIMPA_CONJUNTO)|| (currentState5 == TRANSF3)|| (currentState5 == LIMPA4)|| (currentState5 == TRANSF5) || (currentState5 == TRANSF7) || (currentState5 == LIMPA7) || (currentState5 == LIMPA8) || (currentState5 == TRANSF_CONJUNTA2) || (currentState5 == LIMPA_CONJUNTO2)|| (currentState5 == TRANSF9)|| (currentState5 == LIMPA10)|| (currentState5 == TRANSF11);
-        T3A = (currentState5 == TRANSF2) || (currentState5 == TRANSF_CONJUNTA) || (currentState5 == LIMPA_CONJUNTO) || (currentState5 == LIMPA3) || (currentState5 == TRANSF4) || (currentState5 == LIMPA5) || (currentState5 == TRANSF6) || (currentState5 == LIMPA6) || (currentState5 == TRANSF8) || (currentState5 == TRANSF_CONJUNTA2) || (currentState5 == LIMPA_CONJUNTO2) || (currentState5 == LIMPA9) || (currentState5 == TRANSF10) || (currentState5 == LIMPA11) || (currentState5 == TRANSF12) || (currentState5 == LIMPA12);
+		T2A = (currentState1 == A_PARAR2) || (currentState5 == TRANSF1) || (currentState5 == LIMPA1) || (currentState5 == LIMPA2) || (currentState5 == TRANSF_CONJUNTA) || (currentState5 == LIMPA_CONJUNTO)|| (currentState5 == TRANSF3)|| (currentState5 == LIMPA4)|| (currentState5 == TRANSF5) || (currentState5 == TRANSF7) || (currentState5 == LIMPA7) || (currentState5 == LIMPA8) || (currentState5 == TRANSF_CONJUNTA2) || (currentState5 == LIMPA_CONJUNTO2)|| (currentState5 == TRANSF9)|| (currentState5 == LIMPA10)|| (currentState5 == TRANSF11);
+        T3A = (currentState1 == A_PARAR2) || (currentState5 == TRANSF2) || (currentState5 == TRANSF_CONJUNTA) || (currentState5 == LIMPA_CONJUNTO) || (currentState5 == LIMPA3) || (currentState5 == TRANSF4) || (currentState5 == LIMPA5) || (currentState5 == TRANSF6) || (currentState5 == LIMPA6) || (currentState5 == TRANSF8) || (currentState5 == TRANSF_CONJUNTA2) || (currentState5 == LIMPA_CONJUNTO2) || (currentState5 == LIMPA9) || (currentState5 == TRANSF10) || (currentState5 == LIMPA11) || (currentState5 == TRANSF12) || (currentState5 == LIMPA12);
 		T4A = (currentState5 == INICIO) || (currentState5 == AZUL1_ESPERA) || (currentState5 == AZUL_AZUL2) || (currentState5 == TRANSF2) || (currentState5 == AZUL_VERDE) || (currentState5 == TRANSF_CONJUNTA) || (currentState5 == VERDE1_ESPERA) || (currentState5 == VERDE_AZUL2) || (currentState5 == TRANSF4) || (currentState5 == VERDE_VERDE2) || (currentState5 == TRANSF6) || (currentState5 == AZUL_AZUL4) || (currentState5 == TRANSF8) || (currentState5 == AZUL_VERDE) || (currentState5 == TRANSF_CONJUNTA2) || (currentState5 == VERDE_AZUL4) || (currentState5 == TRANSF10) || (currentState5 == VERDE_VERDE4) || (currentState5 == TRANSF12) || (currentState5 == VERDE_AZUL3);																							
 		PE1 = (currentState5 == ESTICA1_1) || (currentState5 == ESTICA1_2) || (currentState5 == ESTICA1_3) || (currentState5 == ESTICA1_4);
 		PR1 = (currentState5 == RECOLHE1_1) || (currentState5 == RECOLHE1_2) || (currentState5 == RECOLHE1_3) || (currentState5 == RECOLHE1_4);
