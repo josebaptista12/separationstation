@@ -1,15 +1,7 @@
-// ---------- Máquina de estados -----------
-/*
 
-	 //VER SE O FE DO ST2 e ST3 FUNCIONA!!!!
-
-
-*/
 
 #include "IO.c"
 
-
-#undef DEBUG
 
 int aux1=0, aux2=0, aux3=0;
 // Tipos de dados
@@ -166,15 +158,6 @@ void edge_detection() {
 	re_START = (p_START == 0 && START == 1);
 	p_START=START;
 
-	/*re_ST2 = (p_ST2 == 0 && ST2 == 1);
-	p_ST2=ST2;*/
-
-	/*re_ST3 = (p_ST3 == 0 && ST3 == 1);
-	p_ST3=ST3;*/
-
-
-	/*re_SPR1 =  (p_SPR1 == 0 && SPR1 == 1);
-	p_SPR1=SPR1;*/
 
 	re_STR1 = (pr_STR1 == 0 && STR1 == 1);
 	pr_STR1=STR1;
@@ -195,7 +178,7 @@ void edge_detection() {
 	}
 
 	fe_STR2 = (pf_STR2 == 1 && STR2 == 0);
-	pf_STR2=STR2; //ver se tem erro aqui
+	pf_STR2=STR2; 
 	if(fe_STR2) {
 		aux2++;
 	}
@@ -258,10 +241,9 @@ void update_timers(){
 	else {
  		cycle_time = end_time - start_time;
 	}
-
-	// o fim do ciclo atual é o inicio do próximo 
+ 
 	start_time = end_time;
-    // Atualiza temporizadores
+    
  	if (timer1.on)
  		timer1.time = timer1.time + cycle_time;
 
@@ -398,6 +380,9 @@ void ME4() {
                 break;
         }
     }
+	else {
+		nextState4=LW_OFF;
+	}
 }
 
 void ME5() {  
@@ -405,7 +390,7 @@ void ME5() {
 		//certo
         case PARADO_S:
 		if(currentState1==OPERAR || currentState1 == A_PARAR){
-			printf("INICIO\n");
+			//printf("INICIO\n");
 			nextState5=INICIO;
 		}
 		break;
@@ -414,21 +399,23 @@ void ME5() {
 		
 		if(SV1==1){
 			nextState5=AZUL1_ESPERA;
-			printf("AZUL1_ESPERA\n");
+			//printf("AZUL1_ESPERA\n");
 		}
 		else if(SV1==4){
 			nextState5=VERDE1_ESPERA;
-			printf("VERDE1_ESPERA\n");
+			//printf("VERDE1_ESPERA\n");
 		}
 		else if(SV2==1){
 			nextState5=AZUL2_ESPERA;
-			printf("AZUL2_ESPERA\n");
+			//printf("AZUL2_ESPERA\n");
 		}
 		else if(SV2==4){
 			nextState5=VERDE2_ESPERA;
-			printf("VERDE2_ESPERA\n");
+			//printf("VERDE2_ESPERA\n");
 		}
-
+		else if(currentState1 == A_PARAR2) {
+			nextState5 = PARADO_S;
+		}
         break;
 
 //------------RAMO  SV1=1 ----------- //
@@ -436,22 +423,22 @@ void ME5() {
 		case AZUL1_ESPERA:
 			if(SV2==1) {
 				nextState5 = AZUL_AZUL;
-				printf("AZUL_AZUL\n");
+				//printf("AZUL_AZUL\n");
 			}
 			else if(SV2==4) {
 				nextState5 = AZUL_VERDE;
-				printf("AZUL_VERDE\n");
+				//printf("AZUL_VERDE\n");
 				aux1=0;
 			}
 			break;
 		case VERDE1_ESPERA:
 			if(SV2==1) {
 				nextState5 = VERDE_AZUL;
-				printf("VERDE_AZUL\n");
+				//printf("VERDE_AZUL\n");
 			}
 			else if(SV2==4) {
 				nextState5 = VERDE_VERDE;
-				printf("AZUL_VERDE\n");
+				//printf("AZUL_VERDE\n");
 			}
 			break;
 
@@ -459,56 +446,56 @@ void ME5() {
 		case AZUL_AZUL:
 			if(re_STR1) {
 				nextState5 = TRANSF1;
-				printf("TRANSF1\n");
+				//printf("TRANSF1\n");
 			}
 			break;
 
 		case TRANSF1:
 			if(fe_STR1) {
 				nextState5 = LIMPA1;
-				printf("LIMPA1\n");
+				//printf("LIMPA1\n");
 			}
 			break;
 
 		case LIMPA1:
 			if(fe_ST2) {
 				nextState5 = AZUL_AZUL2;
-				printf("AZUL_AZUL2\n");
+				//printf("AZUL_AZUL2\n");
 			}
 			break;
 
 		case AZUL_AZUL2:
 			if(re_STR2) {
 				nextState5 = TRANSF2;
-				printf("TRANSF2\n");
+				//printf("TRANSF2\n");
 			}
 			break;
 
 		case TRANSF2:
 			if(fe_STR2) {
 				nextState5 = ESTICA2_1;
-				printf("ESTICA2_1\n");
+				//printf("ESTICA2_1\n");
 			}
 			break;	
 
 		case ESTICA2_1:
 			if(SPE2==1) {
 				nextState5 = RECOLHE2_1;
-				printf("RECOLHE2_1\n");
+				//printf("RECOLHE2_1\n");
 			}
 			break;	
 
 		case RECOLHE2_1:
 			if(SPR2==1) {
 				nextState5 = LIMPA2;
-				printf("LIMPA2\n");
+				//printf("LIMPA2\n");
 			}
 			break;
 
 		case LIMPA2:
 			if(fe_ST2) {
 				nextState5 = PARADO_S;
-				printf("PARADO_S\n");
+				//printf("PARADO_S\n");
 			}
 			break;
 //------------RAMO  SV1=1  E sv2=4----------- //
@@ -516,7 +503,7 @@ void ME5() {
 		case AZUL_VERDE:
 			if(aux1==2) {
 				nextState5 = TRANSF_CONJUNTA;
-				printf("TRANSF_CONJUNTA\n");
+				//printf("TRANSF_CONJUNTA\n");
 				aux2=0;
 			}
 			break;
@@ -524,7 +511,7 @@ void ME5() {
 		case TRANSF_CONJUNTA:
 			if(aux2==2) {
 				nextState5 = LIMPA_CONJUNTO;
-				printf("LIMPA_CONJUNTO\n");
+				//printf("LIMPA_CONJUNTO\n");
 				aux3=0;
 			}
 			break;
@@ -532,7 +519,7 @@ void ME5() {
 		case LIMPA_CONJUNTO:
 			if(aux3==2) {
 				nextState5 = PARADO_S;
-				printf("PARADO_S\n");
+			//	printf("PARADO_S\n");
 			}
 			break;
 
@@ -541,70 +528,70 @@ void ME5() {
 		case VERDE_AZUL:
 			if(re_STR1) {
 				nextState5 = TRANSF3;
-				printf("TRANSF3\n");
+			//	printf("TRANSF3\n");
 			}
 			break;
 
 		case TRANSF3:
 			if(fe_STR1) {
 				nextState5 = ESTICA1_1;
-				printf("ESTICA1_1\n");
+			//	printf("ESTICA1_1\n");
 			}
 			break;
 
 		case ESTICA1_1:
 			if(SPE1==1) {
 				nextState5 = RECOLHE1_1;
-				printf("RECOLHE1_1\n");
+			//	printf("RECOLHE1_1\n");
 			}
 			break;
 
 		case RECOLHE1_1:
 			if(SPR1==1) {
 				nextState5 = LIMPA3;
-				printf("LIMPA3\n");
+			//	printf("LIMPA3\n");
 			}
 			break;
 
 		case LIMPA3:
 			if(fe_ST3) {
 				nextState5 = VERDE_AZUL2;
-				printf("VERDE_AZUL2\n");
+			//	printf("VERDE_AZUL2\n");
 			}
 			break;	
 
 		case VERDE_AZUL2:
 			if(re_STR2) {
 				nextState5 = TRANSF4;
-				printf("TRANSF4\n");
+			//	printf("TRANSF4\n");
 			}
 			break;	
 
 		case TRANSF4:
 			if(fe_STR2) {
 				nextState5 = ESTICA2_2;
-				printf("ESTICA2_2\n");
+			//	printf("ESTICA2_2\n");
 			}
 			break;
 
 		case ESTICA2_2:
 			if(SPE2) {
 				nextState5 = RECOLHE2_2;
-				printf("RECOLHE2_2\n");
+			//	printf("RECOLHE2_2\n");
 			}
 			break;
 
 		case RECOLHE2_2:
 			if(SPR2) {
 				nextState5 = LIMPA4;
-				printf("LIMPA4\n");
+			//	printf("LIMPA4\n");
 			}
 			break;
 
 		case LIMPA4:
 			if(fe_ST2) {
 				nextState5 = PARADO_S;
-				printf("PARADO_S\n");
+			//	printf("PARADO_S\n");
 			}
 			break;
 
@@ -662,32 +649,32 @@ case VERDE_VERDE:
 		case VERDE2_ESPERA:
 			if(SV1 == 1) {
 				nextState5=VERDE_AZUL3;
-				printf("VERDE_AZUL3\n");
+			//	printf("VERDE_AZUL3\n");
 			}
 			else if(SV1 == 4) {
 				nextState5=VERDE_VERDE3;
-				printf("VERDE_VERDE3\n");
+			//	printf("VERDE_VERDE3\n");
 			}
 			break;
 //------------RAMO SV2=4 E SV1=4 ----------- // certo
        case VERDE_VERDE3:
 			if(re_STR1) {
 				nextState5 = TRANSF11;
-				printf("TRANSF11\n");
+			//	printf("TRANSF11\n");
 			}
 			break;
 
 		case TRANSF11:
 			if(fe_STR1) {
 				nextState5=ESTICA1_4;  
-				printf("ESTICA1_4\n");
+			//	printf("ESTICA1_4\n");
 			}
 			break;
 			
 		case ESTICA1_4: 
 			if(SPE1 == 1 && SPR1 == 0) {
-				printf("%d\n", nextState5);
-				printf("RECOLHE1_4\n");
+			//	printf("%d\n", nextState5);
+			//	printf("RECOLHE1_4\n");
 				nextState5=RECOLHE1_4;
 			}
 			break;
@@ -695,50 +682,50 @@ case VERDE_VERDE:
 		case RECOLHE1_4:
 			if(SPR1 == 1 && SPE1 == 0) {
 				nextState5=LIMPA11;
-				printf("LIMPA11\n");
+			//	printf("LIMPA11\n");
 			}
 			break;
 
 		case LIMPA11:              
 			if(fe_ST3 == 1) {
 				nextState5=VERDE_VERDE4;
-				printf("VERDE_VERDE4\n");
+			//	printf("VERDE_VERDE4\n");
 			}
 			break;
 
 		case VERDE_VERDE4:              
 			if(re_STR2) {
 				nextState5=TRANSF12;
-				printf("TRANSF12\n");
+			//	printf("TRANSF12\n");
 			}
 			break;
 
 		case TRANSF12:              
 			if(fe_STR2) {
 				nextState5=LIMPA12;
-				printf("LIMPA12\n");
+			//	printf("LIMPA12\n");
 			}
 			break;
 
 		case LIMPA12:
 			if(fe_ST3) {
 				nextState5=PARADO_S;
-				printf("PARADO_S\n");
+			//	printf("PARADO_S\n");
 			}
 			break; 
 //------------RAMO  SV2=4 E SV1=1 ----------- // certo
 		case VERDE_AZUL3: //a funcionar
-		if(aux1==2) {						//se nao funcionar cagar nisto dos auxiliares e por só um deles
+		if(aux1==2) {						
 			nextState5=TRANSF_CONJUNTA2;
 			aux1=0;
-			printf("TRANSF_CONJUNTA2\n");
+			//printf("TRANSF_CONJUNTA2\n");
 		}
 		break;
 			
 		case TRANSF_CONJUNTA2:
 			if(aux2==2) {
 				nextState5=LIMPA_CONJUNTO2;
-				printf("LIMPA_CONJUNTO2\n");
+			//	printf("LIMPA_CONJUNTO2\n");
 				aux2=0;
 			}
 			break;
@@ -746,7 +733,7 @@ case VERDE_VERDE:
 		case LIMPA_CONJUNTO2:             
 			if(aux3 == 2) {
 				nextState5=PARADO_S;
-				printf("PARADO_S\n");
+			//	printf("PARADO_S\n");
 			}
 			break;
  
@@ -754,60 +741,60 @@ case VERDE_VERDE:
 		 case AZUL2_ESPERA:
 			if(SV1==4) {
 				nextState5 = AZUL_VERDE3;
-				printf("AZUL_VERDE3\n");
+			//	printf("AZUL_VERDE3\n");
 			}
 			else if(SV1==1){
 				nextState5=AZUL_AZUL3;
-				printf("AZUL_AZUL3\n");
+			//	printf("AZUL_AZUL3\n");
 			}
             break;
  // RAMO SV2=1 // e SV1=1
 		case AZUL_AZUL3: //a funcionar
 			if(re_STR1) {
 			nextState5=TRANSF7;
-			printf("TRANSF7\n");
-		}
+			//printf("TRANSF7\n");
+			}
 		break;
 			
 		case TRANSF7:
 			if(fe_STR1) {
 				nextState5=LIMPA7;
-				printf("LIMPA7\n");
+			//	printf("LIMPA7\n");
 			}
 			break;
 			
 		case LIMPA7:              
 			if(fe_ST2 == 1) {
 				nextState5=AZUL_AZUL4;
-				printf("AZUL_AZUL4\n");
+			//	printf("AZUL_AZUL4\n");
 			}
 			break;
 
 		case AZUL_AZUL4:              
 			if(re_STR2) {
 				nextState5=TRANSF8;
-				printf("TRANSF8\n");
+			//	printf("TRANSF8\n");
 			}
 			break;
 
 		case TRANSF8:             
 			if(fe_STR2) {
 				nextState5=ESTICA2_3;
-				printf("ESTICA2_3\n");
+			//	printf("ESTICA2_3\n");
 			}
 			break;
 
 		case ESTICA2_3:              
 			if(SPE2 == 1) {
 				nextState5=RECOLHE2_3;
-				printf("RECOLHE2_3\n");
+			//	printf("RECOLHE2_3\n");
 			}
 		break;
 
 		case RECOLHE2_3:              
 			if(SPR2 == 1) {
 				nextState5=LIMPA8;
-				printf("LIMPA8\n");
+			//	printf("LIMPA8\n");
 			}
 			break;
 
@@ -815,7 +802,7 @@ case VERDE_VERDE:
 		//adicionar transição no papel//
 			if(fe_ST2) {
 				nextState5=PARADO_S;
-				printf("PARADO_S\n");
+			//	printf("PARADO_S\n");
 			}
 			break;
 
@@ -824,70 +811,70 @@ case VERDE_VERDE:
 		case AZUL_VERDE3:
 			if(re_STR1) {
 			nextState5=TRANSF9;
-			printf("TRANSF9\n");
+			//printf("TRANSF9\n");
 		}
 		break;
 			
 		case TRANSF9:
 			if(fe_STR1) {
 				nextState5=ESTICA1_3;
-				printf("ESTICA1_3\n");
+			//	printf("ESTICA1_3\n");
 			}
 			break;
 			
 		case ESTICA1_3:
 			if(SPE1 == 1) {
 				nextState5=RECOLHE1_3;
-				printf("RECOLHE1_3\n");
+			//	printf("RECOLHE1_3\n");
 			}
 			break;
 
 		case RECOLHE1_3:
 			if(SPR1 == 1) {
 				nextState5=LIMPA9;
-				printf("LIMPA9\n");
+			//	printf("LIMPA9\n");
 			}
 			break;
 
 		case LIMPA9:              
 			if(fe_ST3 == 1) {
 				nextState5=VERDE_AZUL4;
-				printf("VERDE_AZUL4\n");
+			//	printf("VERDE_AZUL4\n");
 			}
 			break;
 
 		case VERDE_AZUL4:              
 			if(re_STR2) {
 				nextState5=TRANSF10;
-				printf("TRANSF10\n");
+			//	printf("TRANSF10\n");
 			}
 			break;
 
 		case TRANSF10:              
 			if(fe_STR2) {
 				nextState5=ESTICA2_4;
-				printf("ESTICA2_4\n");
+			//	printf("ESTICA2_4\n");
 			}
 			break;
 
 		case ESTICA2_4:              
 			if(SPE2 == 1) {
 				nextState5=RECOLHE2_4;
-				printf("RECOLHE2_4\n");
+			//	printf("RECOLHE2_4\n");
 			}
 		break;
 
 		case RECOLHE2_4:              
 			if(SPR2 == 1) {
 				nextState5=LIMPA10;
-				printf("LIMPA10\n");
+			//	printf("LIMPA10\n");
 			}
 			break;
 
 		case LIMPA10:
 			if(fe_ST2) {
 				nextState5=PARADO_S;
-				printf("PARADO_S\n");
+			//	printf("PARADO_S\n");
 			}
 			break;
 	}	
@@ -907,13 +894,10 @@ int main() {
 	while(1) {
 
         update_timers();
-		// Leitura das entradas
 		read_inputs();
-		// Transição entre estados
 		edge_detection();	    
 		
-
-   		// Transição entre estados
+   		
 		ME1();
 		ME2();
 		ME3();
@@ -940,11 +924,8 @@ int main() {
 		PR1 = (currentState5 == RECOLHE1_1) || (currentState5 == RECOLHE1_2) || (currentState5 == RECOLHE1_3) || (currentState5 == RECOLHE1_4);
         PE2 = (currentState5 == ESTICA2_1) || (currentState5 == ESTICA2_2) || (currentState5 == ESTICA2_3) || (currentState5 == ESTICA2_4);
 		PR2 = (currentState5 == RECOLHE2_1) || (currentState5 == RECOLHE2_2) || (currentState5 == RECOLHE2_3) || (currentState5 == RECOLHE2_4);
-		//printf("%d\n", currentState8);
-		
 
 
-		//Escrita nas saídas
 		write_outputs();
 		if(currentState5==PARADO_S) {
 			aux1=0;
@@ -953,6 +934,6 @@ int main() {
 		}
 
 			
-	} // end loop
+	} 
 	
-} // end main
+}
